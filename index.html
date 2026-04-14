@@ -37,9 +37,9 @@
         .bg-layer {
             position: fixed; inset: 0; z-index: 0;
             background:
-                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,51,102,0.25) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(20,57,98,0.15) 0%, transparent 55%),
-                radial-gradient(ellipse 50% 50% at 10% 80%, rgba(196,163,90,0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 90% 55% at 50% -10%, rgba(0,51,102,0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 70% 45% at 85% 60%, rgba(20,57,98,0.18) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 50% at 10% 80%, rgba(196,163,90,0.05) 0%, transparent 50%),
                 linear-gradient(180deg, #060e1a 0%, #0a1628 30%, #0d1d35 60%, #091320 100%);
             pointer-events: none;
         }
@@ -49,8 +49,8 @@
                 linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
             background-size: 60px 60px;
-            mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 60%);
-            -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 60%);
+            mask-image: radial-gradient(ellipse at 50% 30%, black 25%, transparent 65%);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 25%, transparent 65%);
         }
 
         .reveal {
@@ -180,7 +180,6 @@
         }
         .app-card:hover .card-glow { height: 4px; filter: brightness(1.3); }
 
-        /* Logo container */
         .logo-container {
             width: 64px; height: 64px; border-radius: 20px;
             display: flex; align-items: center; justify-content: center;
@@ -198,7 +197,6 @@
             transform: scale(1.05);
         }
 
-        /* Logo text badge */
         .logo-badge {
             position: absolute; bottom: -3px; right: -3px;
             width: 20px; height: 20px; border-radius: 7px;
@@ -277,7 +275,6 @@
             border: 1px solid rgba(255,255,255,0.06);
         }
 
-        /* Subtle ambient glow behind logo on hover */
         .logo-ambient {
             position: absolute; inset: -8px; border-radius: 28px;
             opacity: 0; transition: opacity 0.5s; filter: blur(12px);
@@ -297,7 +294,7 @@
 
     <!-- Top bar -->
     <div class="fixed top-0 left-0 right-0 z-50 top-bar">
-        <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div class="max-w-[1600px] mx-auto px-8 h-14 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <img src="https://z-cdn-media.chatglm.cn/files/b8bffa74-ccd7-43df-ac0a-7d38232e3901.png?auth_key=1872868863-b6cd966dc51a4c34aa738032b487a895-0-e6beed34fb7fb9a9650976366f590c26" style="width:32px;height:auto" alt="Logo BPS" class="rounded">
                 <div class="flex flex-col leading-none">
@@ -316,10 +313,10 @@
     </div>
 
     <!-- Main -->
-    <main class="relative z-10 max-w-6xl mx-auto px-6 pt-28 pb-20">
+    <main class="relative z-10 max-w-[1600px] mx-auto px-8 pt-28 pb-20">
 
-        <!-- Hero -->
-        <div class="text-center mb-16">
+        <!-- Hero — lebar penuh -->
+        <div class="text-center mb-20">
             <div class="reveal delay-100 flex flex-col items-center mb-5">
                 <img src="https://z-cdn-media.chatglm.cn/files/b8bffa74-ccd7-43df-ac0a-7d38232e3901.png?auth_key=1872868863-b6cd966dc51a4c34aa738032b487a895-0-e6beed34fb7fb9a9650976366f590c26" style="width:65px;height:auto" alt="Logo BPS" class="mb-5 drop-shadow-lg">
                 <p class="reveal delay-200 text-xl md:text-2xl font-bold text-slate-400 max-w-md mx-auto leading-relaxed mb-5">BADAN PUSAT STATISTIK</p>
@@ -333,211 +330,202 @@
             <div class="reveal delay-200 gold-line max-w-xs mx-auto mt-6 mb-2"></div>
         </div>
 
-        <!-- App Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- App Cards — dibatasi lebarnya, tetap di tengah -->
+        <div class="max-w-[1080px] mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
-            <!-- Card 1: Matrik Kegiatan — BLUE -->
-            <a href="https://sikuat1471.github.io/matrikkegiatan/" target="_blank" class="app-card card-blue reveal delay-100 group">
-                <div class="card-glow" style="background: linear-gradient(90deg, #3b82f6, #60a5fa);"></div>
-                <div class="p-7 flex-1 flex flex-col relative z-10">
-                    <div class="flex items-start justify-between mb-5">
-                        <div class="logo-container" style="background: linear-gradient(145deg, rgba(59,130,246,0.18), rgba(59,130,246,0.08)); border: 1px solid rgba(59,130,246,0.25);">
-                            <div class="logo-ambient" style="background: rgba(59,130,246,0.2);"></div>
-                            <!-- Logo: Grid/Table -->
-                            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="2" y="2" width="32" height="32" rx="6" stroke="#60a5fa" stroke-width="1.5" fill="rgba(59,130,246,0.08)"/>
-                                <rect x="7" y="7" width="9" height="9" rx="2" fill="#3b82f6" opacity="0.9"/>
-                                <rect x="20" y="7" width="9" height="9" rx="2" fill="#60a5fa" opacity="0.5"/>
-                                <rect x="7" y="20" width="9" height="9" rx="2" fill="#60a5fa" opacity="0.5"/>
-                                <rect x="20" y="20" width="9" height="9" rx="2" fill="#3b82f6" opacity="0.7"/>
-                                <line x1="18" y1="4" x2="18" y2="32" stroke="#60a5fa" stroke-width="0.8" opacity="0.3"/>
-                                <line x1="4" y1="18" x2="32" y2="18" stroke="#60a5fa" stroke-width="0.8" opacity="0.3"/>
-                            </svg>
-                            <div class="logo-badge" style="background: #3b82f6; color: #fff;">M</div>
+                <!-- Card 1: Matrik Kegiatan — BLUE -->
+                <a href="https://sikuat1471.github.io/matrikkegiatan/" target="_blank" class="app-card card-blue reveal delay-100 group">
+                    <div class="card-glow" style="background: linear-gradient(90deg, #3b82f6, #60a5fa);"></div>
+                    <div class="p-7 flex-1 flex flex-col relative z-10">
+                        <div class="flex items-start justify-between mb-5">
+                            <div class="logo-container" style="background: linear-gradient(145deg, rgba(59,130,246,0.18), rgba(59,130,246,0.08)); border: 1px solid rgba(59,130,246,0.25);">
+                                <div class="logo-ambient" style="background: rgba(59,130,246,0.2);"></div>
+                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="2" width="32" height="32" rx="6" stroke="#60a5fa" stroke-width="1.5" fill="rgba(59,130,246,0.08)"/>
+                                    <rect x="7" y="7" width="9" height="9" rx="2" fill="#3b82f6" opacity="0.9"/>
+                                    <rect x="20" y="7" width="9" height="9" rx="2" fill="#60a5fa" opacity="0.5"/>
+                                    <rect x="7" y="20" width="9" height="9" rx="2" fill="#60a5fa" opacity="0.5"/>
+                                    <rect x="20" y="20" width="9" height="9" rx="2" fill="#3b82f6" opacity="0.7"/>
+                                    <line x1="18" y1="4" x2="18" y2="32" stroke="#60a5fa" stroke-width="0.8" opacity="0.3"/>
+                                    <line x1="4" y1="18" x2="32" y2="18" stroke="#60a5fa" stroke-width="0.8" opacity="0.3"/>
+                                </svg>
+                                <div class="logo-badge" style="background: #3b82f6; color: #fff;">M</div>
+                            </div>
+                            <div class="go-btn">
+                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                            </div>
                         </div>
-                        <div class="go-btn">
-                            <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                        <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Matrik Kegiatan</h3>
+                        <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Pengelolaan matriks kegiatan untuk perencanaan dan monitoring program kerja.</p>
+                        <div class="mt-5 flex items-center gap-2">
+                            <span class="tag-chip" style="background: rgba(59,130,246,0.1); color: #93c5fd; border: 1px solid rgba(59,130,246,0.2);">Perencanaan</span>
+                            <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Monitoring</span>
                         </div>
                     </div>
-                    <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Matrik Kegiatan</h3>
-                    <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Pengelolaan matriks kegiatan untuk perencanaan dan monitoring program kerja.</p>
-                    <div class="mt-5 flex items-center gap-2">
-                        <span class="tag-chip" style="background: rgba(59,130,246,0.1); color: #93c5fd; border: 1px solid rgba(59,130,246,0.2);">Perencanaan</span>
-                        <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Monitoring</span>
-                    </div>
-                </div>
-            </a>
+                </a>
 
-            <!-- Card 2: Persediaan — TEAL -->
-            <a href="https://sikuat1471.github.io/persediaan/" target="_blank" class="app-card card-teal reveal delay-200 group">
-                <div class="card-glow" style="background: linear-gradient(90deg, #14b8a6, #2dd4bf);"></div>
-                <div class="p-7 flex-1 flex flex-col relative z-10">
-                    <div class="flex items-start justify-between mb-5">
-                        <div class="logo-container" style="background: linear-gradient(145deg, rgba(20,184,166,0.18), rgba(20,184,166,0.08)); border: 1px solid rgba(20,184,166,0.25);">
-                            <div class="logo-ambient" style="background: rgba(20,184,166,0.2);"></div>
-                            <!-- Logo: Package/Box stacked -->
-                            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18 4L4 12L18 20L32 12L18 4Z" fill="rgba(20,184,166,0.2)" stroke="#2dd4bf" stroke-width="1.5" stroke-linejoin="round"/>
-                                <path d="M4 12V24L18 32V20L4 12Z" fill="rgba(20,184,166,0.1)" stroke="#2dd4bf" stroke-width="1.5" stroke-linejoin="round"/>
-                                <path d="M32 12V24L18 32V20L32 12Z" fill="rgba(20,184,166,0.15)" stroke="#2dd4bf" stroke-width="1.5" stroke-linejoin="round"/>
-                                <line x1="18" y1="4" x2="18" y2="20" stroke="#14b8a6" stroke-width="1" opacity="0.5"/>
-                                <line x1="18" y1="20" x2="18" y2="32" stroke="#14b8a6" stroke-width="1" opacity="0.3"/>
-                                <circle cx="18" cy="14" r="2.5" fill="#2dd4bf" opacity="0.8"/>
-                            </svg>
-                            <div class="logo-badge" style="background: #14b8a6; color: #fff;">P</div>
+                <!-- Card 2: Persediaan — TEAL -->
+                <a href="https://sikuat1471.github.io/persediaan/" target="_blank" class="app-card card-teal reveal delay-200 group">
+                    <div class="card-glow" style="background: linear-gradient(90deg, #14b8a6, #2dd4bf);"></div>
+                    <div class="p-7 flex-1 flex flex-col relative z-10">
+                        <div class="flex items-start justify-between mb-5">
+                            <div class="logo-container" style="background: linear-gradient(145deg, rgba(20,184,166,0.18), rgba(20,184,166,0.08)); border: 1px solid rgba(20,184,166,0.25);">
+                                <div class="logo-ambient" style="background: rgba(20,184,166,0.2);"></div>
+                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18 4L4 12L18 20L32 12L18 4Z" fill="rgba(20,184,166,0.2)" stroke="#2dd4bf" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <path d="M4 12V24L18 32V20L4 12Z" fill="rgba(20,184,166,0.1)" stroke="#2dd4bf" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <path d="M32 12V24L18 32V20L32 12Z" fill="rgba(20,184,166,0.15)" stroke="#2dd4bf" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <line x1="18" y1="4" x2="18" y2="20" stroke="#14b8a6" stroke-width="1" opacity="0.5"/>
+                                    <line x1="18" y1="20" x2="18" y2="32" stroke="#14b8a6" stroke-width="1" opacity="0.3"/>
+                                    <circle cx="18" cy="14" r="2.5" fill="#2dd4bf" opacity="0.8"/>
+                                </svg>
+                                <div class="logo-badge" style="background: #14b8a6; color: #fff;">P</div>
+                            </div>
+                            <div class="go-btn">
+                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                            </div>
                         </div>
-                        <div class="go-btn">
-                            <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                        <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Persediaan</h3>
+                        <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Manajemen persediaan barang, pencatatan stok masuk dan keluar secara terintegrasi.</p>
+                        <div class="mt-5 flex items-center gap-2">
+                            <span class="tag-chip" style="background: rgba(20,184,166,0.1); color: #5eead4; border: 1px solid rgba(20,184,166,0.2);">Inventaris</span>
+                            <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Stok</span>
                         </div>
                     </div>
-                    <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Persediaan</h3>
-                    <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Manajemen persediaan barang, pencatatan stok masuk dan keluar secara terintegrasi.</p>
-                    <div class="mt-5 flex items-center gap-2">
-                        <span class="tag-chip" style="background: rgba(20,184,166,0.1); color: #5eead4; border: 1px solid rgba(20,184,166,0.2);">Inventaris</span>
-                        <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Stok</span>
-                    </div>
-                </div>
-            </a>
+                </a>
 
-            <!-- Card 3: Register — VIOLET -->
-            <a href="https://sikuat1471.github.io/digitasipenomoran/" target="_blank" class="app-card card-violet reveal delay-300 group">
-                <div class="card-glow" style="background: linear-gradient(90deg, #8b5cf6, #a78bfa);"></div>
-                <div class="p-7 flex-1 flex flex-col relative z-10">
-                    <div class="flex items-start justify-between mb-5">
-                        <div class="logo-container" style="background: linear-gradient(145deg, rgba(139,92,246,0.18), rgba(139,92,246,0.08)); border: 1px solid rgba(139,92,246,0.25);">
-                            <div class="logo-ambient" style="background: rgba(139,92,246,0.2);"></div>
-                            <!-- Logo: Document with number -->
-                            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 4H22L28 10V32H8V4Z" fill="rgba(139,92,246,0.1)" stroke="#a78bfa" stroke-width="1.5" stroke-linejoin="round"/>
-                                <path d="M22 4V10H28" stroke="#a78bfa" stroke-width="1.5" stroke-linejoin="round"/>
-                                <text x="18" y="24" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#a78bfa" opacity="0.9">#</text>
-                                <line x1="12" y1="14" x2="24" y2="14" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
-                                <line x1="12" y1="18" x2="20" y2="18" stroke="#8b5cf6" stroke-width="1" opacity="0.2"/>
-                                <line x1="12" y1="28" x2="24" y2="28" stroke="#8b5cf6" stroke-width="1" opacity="0.15"/>
-                            </svg>
-                            <div class="logo-badge" style="background: #8b5cf6; color: #fff;">R</div>
+                <!-- Card 3: Register — VIOLET -->
+                <a href="https://sikuat1471.github.io/digitasipenomoran/" target="_blank" class="app-card card-violet reveal delay-300 group">
+                    <div class="card-glow" style="background: linear-gradient(90deg, #8b5cf6, #a78bfa);"></div>
+                    <div class="p-7 flex-1 flex flex-col relative z-10">
+                        <div class="flex items-start justify-between mb-5">
+                            <div class="logo-container" style="background: linear-gradient(145deg, rgba(139,92,246,0.18), rgba(139,92,246,0.08)); border: 1px solid rgba(139,92,246,0.25);">
+                                <div class="logo-ambient" style="background: rgba(139,92,246,0.2);"></div>
+                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8 4H22L28 10V32H8V4Z" fill="rgba(139,92,246,0.1)" stroke="#a78bfa" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <path d="M22 4V10H28" stroke="#a78bfa" stroke-width="1.5" stroke-linejoin="round"/>
+                                    <text x="18" y="24" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#a78bfa" opacity="0.9">#</text>
+                                    <line x1="12" y1="14" x2="24" y2="14" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
+                                    <line x1="12" y1="18" x2="20" y2="18" stroke="#8b5cf6" stroke-width="1" opacity="0.2"/>
+                                    <line x1="12" y1="28" x2="24" y2="28" stroke="#8b5cf6" stroke-width="1" opacity="0.15"/>
+                                </svg>
+                                <div class="logo-badge" style="background: #8b5cf6; color: #fff;">R</div>
+                            </div>
+                            <div class="go-btn">
+                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                            </div>
                         </div>
-                        <div class="go-btn">
-                            <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                        <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Register</h3>
+                        <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Sistem digitasi penomoran dan registrasi dokumen otomatis untuk administrasi.</p>
+                        <div class="mt-5 flex items-center gap-2">
+                            <span class="tag-chip" style="background: rgba(139,92,246,0.1); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.2);">Dokumen</span>
+                            <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Penomoran</span>
                         </div>
                     </div>
-                    <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Register</h3>
-                    <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Sistem digitasi penomoran dan registrasi dokumen otomatis untuk administrasi.</p>
-                    <div class="mt-5 flex items-center gap-2">
-                        <span class="tag-chip" style="background: rgba(139,92,246,0.1); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.2);">Dokumen</span>
-                        <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Penomoran</span>
-                    </div>
-                </div>
-            </a>
+                </a>
 
-            <!-- Card 4: Pajak TER — GOLD -->
-            <a href="https://sikuat1471.github.io/perhitunganpajakter/" target="_blank" class="app-card card-gold reveal delay-400 group">
-                <div class="card-glow" style="background: linear-gradient(90deg, #c4a35a, #f0d78c);"></div>
-                <div class="p-7 flex-1 flex flex-col relative z-10">
-                    <div class="flex items-start justify-between mb-5">
-                        <div class="logo-container" style="background: linear-gradient(145deg, rgba(196,163,90,0.2), rgba(196,163,90,0.08)); border: 1px solid rgba(196,163,90,0.3);">
-                            <div class="logo-ambient" style="background: rgba(196,163,90,0.25);"></div>
-                            <!-- Logo: Calculator/Money -->
-                            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="4" y="4" width="28" height="28" rx="6" fill="rgba(196,163,90,0.1)" stroke="#f0d78c" stroke-width="1.5"/>
-                                <rect x="8" y="8" width="20" height="10" rx="3" fill="rgba(196,163,90,0.2)" stroke="#f0d78c" stroke-width="1" opacity="0.8"/>
-                                <text x="18" y="16" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="700" fill="#f0d78c" opacity="0.9">Rp</text>
-                                <circle cx="11" cy="23" r="1.8" fill="#c4a35a" opacity="0.8"/>
-                                <circle cx="18" cy="23" r="1.8" fill="#c4a35a" opacity="0.6"/>
-                                <circle cx="25" cy="23" r="1.8" fill="#c4a35a" opacity="0.8"/>
-                                <circle cx="11" cy="29" r="1.8" fill="#c4a35a" opacity="0.5"/>
-                                <rect x="15" y="27.2" width="12" height="3.6" rx="1.8" fill="rgba(196,163,90,0.3)" stroke="#c4a35a" stroke-width="0.8" opacity="0.6"/>
-                            </svg>
-                            <div class="logo-badge" style="background: #c4a35a; color: #1a1a1a;">T</div>
+                <!-- Card 4: Pajak TER — GOLD -->
+                <a href="https://sikuat1471.github.io/perhitunganpajakter/" target="_blank" class="app-card card-gold reveal delay-400 group">
+                    <div class="card-glow" style="background: linear-gradient(90deg, #c4a35a, #f0d78c);"></div>
+                    <div class="p-7 flex-1 flex flex-col relative z-10">
+                        <div class="flex items-start justify-between mb-5">
+                            <div class="logo-container" style="background: linear-gradient(145deg, rgba(196,163,90,0.2), rgba(196,163,90,0.08)); border: 1px solid rgba(196,163,90,0.3);">
+                                <div class="logo-ambient" style="background: rgba(196,163,90,0.25);"></div>
+                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="4" y="4" width="28" height="28" rx="6" fill="rgba(196,163,90,0.1)" stroke="#f0d78c" stroke-width="1.5"/>
+                                    <rect x="8" y="8" width="20" height="10" rx="3" fill="rgba(196,163,90,0.2)" stroke="#f0d78c" stroke-width="1" opacity="0.8"/>
+                                    <text x="18" y="16" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="700" fill="#f0d78c" opacity="0.9">Rp</text>
+                                    <circle cx="11" cy="23" r="1.8" fill="#c4a35a" opacity="0.8"/>
+                                    <circle cx="18" cy="23" r="1.8" fill="#c4a35a" opacity="0.6"/>
+                                    <circle cx="25" cy="23" r="1.8" fill="#c4a35a" opacity="0.8"/>
+                                    <circle cx="11" cy="29" r="1.8" fill="#c4a35a" opacity="0.5"/>
+                                    <rect x="15" y="27.2" width="12" height="3.6" rx="1.8" fill="rgba(196,163,90,0.3)" stroke="#c4a35a" stroke-width="0.8" opacity="0.6"/>
+                                </svg>
+                                <div class="logo-badge" style="background: #c4a35a; color: #1a1a1a;">T</div>
+                            </div>
+                            <div class="go-btn">
+                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                            </div>
                         </div>
-                        <div class="go-btn">
-                            <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                        <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Pajak TER</h3>
+                        <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Perhitungan pajak Tera dan Terekam secara akurat dengan simulasi otomatis.</p>
+                        <div class="mt-5 flex items-center gap-2">
+                            <span class="tag-chip" style="background: rgba(196,163,90,0.1); color: #f0d78c; border: 1px solid rgba(196,163,90,0.25);">Pajak</span>
+                            <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Simulasi</span>
                         </div>
                     </div>
-                    <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Pajak TER</h3>
-                    <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Perhitungan pajak Tera dan Terekam secara akurat dengan simulasi otomatis.</p>
-                    <div class="mt-5 flex items-center gap-2">
-                        <span class="tag-chip" style="background: rgba(196,163,90,0.1); color: #f0d78c; border: 1px solid rgba(196,163,90,0.25);">Pajak</span>
-                        <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Simulasi</span>
-                    </div>
-                </div>
-            </a>
+                </a>
 
-            <!-- Card 5: Lembur — ROSE -->
-            <a href="https://sikuat1471.github.io/perhitunganlembur/" target="_blank" class="app-card card-rose reveal delay-500 group">
-                <div class="card-glow" style="background: linear-gradient(90deg, #f43f5e, #fb7185);"></div>
-                <div class="p-7 flex-1 flex flex-col relative z-10">
-                    <div class="flex items-start justify-between mb-5">
-                        <div class="logo-container" style="background: linear-gradient(145deg, rgba(244,63,94,0.18), rgba(244,63,94,0.08)); border: 1px solid rgba(244,63,94,0.25);">
-                            <div class="logo-ambient" style="background: rgba(244,63,94,0.2);"></div>
-                            <!-- Logo: Clock with overtime indicator -->
-                            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="18" cy="18" r="14" fill="rgba(244,63,94,0.08)" stroke="#fb7185" stroke-width="1.5"/>
-                                <circle cx="18" cy="18" r="11" stroke="#f43f5e" stroke-width="0.5" opacity="0.3" stroke-dasharray="2 2"/>
-                                <!-- Clock hands -->
-                                <line x1="18" y1="18" x2="18" y2="10" stroke="#fb7185" stroke-width="2" stroke-linecap="round"/>
-                                <line x1="18" y1="18" x2="24" y2="18" stroke="#f43f5e" stroke-width="1.5" stroke-linecap="round"/>
-                                <circle cx="18" cy="18" r="1.5" fill="#fb7185"/>
-                                <!-- Hour markers -->
-                                <circle cx="18" cy="7" r="1" fill="#fb7185" opacity="0.6"/>
-                                <circle cx="18" cy="29" r="1" fill="#fb7185" opacity="0.6"/>
-                                <circle cx="7" cy="18" r="1" fill="#fb7185" opacity="0.6"/>
-                                <circle cx="29" cy="18" r="1" fill="#fb7185" opacity="0.6"/>
-                                <!-- Overtime arc -->
-                                <path d="M26 10 A14 14 0 0 1 29 18" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7"/>
-                            </svg>
-                            <div class="logo-badge" style="background: #f43f5e; color: #fff;">L</div>
+                <!-- Card 5: Lembur — ROSE -->
+                <a href="https://sikuat1471.github.io/perhitunganlembur/" target="_blank" class="app-card card-rose reveal delay-500 group">
+                    <div class="card-glow" style="background: linear-gradient(90deg, #f43f5e, #fb7185);"></div>
+                    <div class="p-7 flex-1 flex flex-col relative z-10">
+                        <div class="flex items-start justify-between mb-5">
+                            <div class="logo-container" style="background: linear-gradient(145deg, rgba(244,63,94,0.18), rgba(244,63,94,0.08)); border: 1px solid rgba(244,63,94,0.25);">
+                                <div class="logo-ambient" style="background: rgba(244,63,94,0.2);"></div>
+                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="18" cy="18" r="14" fill="rgba(244,63,94,0.08)" stroke="#fb7185" stroke-width="1.5"/>
+                                    <circle cx="18" cy="18" r="11" stroke="#f43f5e" stroke-width="0.5" opacity="0.3" stroke-dasharray="2 2"/>
+                                    <line x1="18" y1="18" x2="18" y2="10" stroke="#fb7185" stroke-width="2" stroke-linecap="round"/>
+                                    <line x1="18" y1="18" x2="24" y2="18" stroke="#f43f5e" stroke-width="1.5" stroke-linecap="round"/>
+                                    <circle cx="18" cy="18" r="1.5" fill="#fb7185"/>
+                                    <circle cx="18" cy="7" r="1" fill="#fb7185" opacity="0.6"/>
+                                    <circle cx="18" cy="29" r="1" fill="#fb7185" opacity="0.6"/>
+                                    <circle cx="7" cy="18" r="1" fill="#fb7185" opacity="0.6"/>
+                                    <circle cx="29" cy="18" r="1" fill="#fb7185" opacity="0.6"/>
+                                    <path d="M26 10 A14 14 0 0 1 29 18" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7"/>
+                                </svg>
+                                <div class="logo-badge" style="background: #f43f5e; color: #fff;">L</div>
+                            </div>
+                            <div class="go-btn">
+                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                            </div>
                         </div>
-                        <div class="go-btn">
-                            <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                        <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Lembur</h3>
+                        <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Kalkulasi jam lembur pegawai dengan perhitungan upah lembur yang sesuai aturan.</p>
+                        <div class="mt-5 flex items-center gap-2">
+                            <span class="tag-chip" style="background: rgba(244,63,94,0.1); color: #fda4af; border: 1px solid rgba(244,63,94,0.2);">Kepegawaian</span>
+                            <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Upah</span>
                         </div>
                     </div>
-                    <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Lembur</h3>
-                    <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Kalkulasi jam lembur pegawai dengan perhitungan upah lembur yang sesuai aturan.</p>
-                    <div class="mt-5 flex items-center gap-2">
-                        <span class="tag-chip" style="background: rgba(244,63,94,0.1); color: #fda4af; border: 1px solid rgba(244,63,94,0.2);">Kepegawaian</span>
-                        <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Upah</span>
-                    </div>
-                </div>
-            </a>
+                </a>
 
-            <!-- Card 6: Laporan — EMERALD -->
-            <a href="https://sikuat1471.github.io/laporantranslok/" target="_blank" class="app-card card-emerald reveal delay-600 group">
-                <div class="card-glow" style="background: linear-gradient(90deg, #10b981, #34d399);"></div>
-                <div class="p-7 flex-1 flex flex-col relative z-10">
-                    <div class="flex items-start justify-between mb-5">
-                        <div class="logo-container" style="background: linear-gradient(145deg, rgba(16,185,129,0.18), rgba(16,185,129,0.08)); border: 1px solid rgba(16,185,129,0.25);">
-                            <div class="logo-ambient" style="background: rgba(16,185,129,0.2);"></div>
-                            <!-- Logo: Chart/Report -->
-                            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="4" y="4" width="28" height="28" rx="6" fill="rgba(16,185,129,0.06)" stroke="#34d399" stroke-width="1.5"/>
-                                <!-- Bar chart -->
-                                <rect x="9" y="22" width="4" height="8" rx="1" fill="#34d399" opacity="0.5"/>
-                                <rect x="16" y="16" width="4" height="14" rx="1" fill="#34d399" opacity="0.7"/>
-                                <rect x="23" y="11" width="4" height="19" rx="1" fill="#10b981" opacity="0.9"/>
-                                <!-- Trend line -->
-                                <path d="M8 24L17 17L25 12L30 9" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
-                                <circle cx="30" cy="9" r="2" fill="#34d399" opacity="0.8"/>
-                            </svg>
-                            <div class="logo-badge" style="background: #10b981; color: #fff;">Lp</div>
+                <!-- Card 6: Laporan — EMERALD -->
+                <a href="https://sikuat1471.github.io/laporantranslok/" target="_blank" class="app-card card-emerald reveal delay-600 group">
+                    <div class="card-glow" style="background: linear-gradient(90deg, #10b981, #34d399);"></div>
+                    <div class="p-7 flex-1 flex flex-col relative z-10">
+                        <div class="flex items-start justify-between mb-5">
+                            <div class="logo-container" style="background: linear-gradient(145deg, rgba(16,185,129,0.18), rgba(16,185,129,0.08)); border: 1px solid rgba(16,185,129,0.25);">
+                                <div class="logo-ambient" style="background: rgba(16,185,129,0.2);"></div>
+                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="4" y="4" width="28" height="28" rx="6" fill="rgba(16,185,129,0.06)" stroke="#34d399" stroke-width="1.5"/>
+                                    <rect x="9" y="22" width="4" height="8" rx="1" fill="#34d399" opacity="0.5"/>
+                                    <rect x="16" y="16" width="4" height="14" rx="1" fill="#34d399" opacity="0.7"/>
+                                    <rect x="23" y="11" width="4" height="19" rx="1" fill="#10b981" opacity="0.9"/>
+                                    <path d="M8 24L17 17L25 12L30 9" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                                    <circle cx="30" cy="9" r="2" fill="#34d399" opacity="0.8"/>
+                                </svg>
+                                <div class="logo-badge" style="background: #10b981; color: #fff;">Lp</div>
+                            </div>
+                            <div class="go-btn">
+                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                            </div>
                         </div>
-                        <div class="go-btn">
-                            <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                        <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Laporan</h3>
+                        <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Laporan translokasi lengkap dengan visualisasi data dan ekspor dokumen.</p>
+                        <div class="mt-5 flex items-center gap-2">
+                            <span class="tag-chip" style="background: rgba(16,185,129,0.1); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.2);">Pelaporan</span>
+                            <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Translokasi</span>
                         </div>
                     </div>
-                    <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Laporan</h3>
-                    <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Laporan translokasi lengkap dengan visualisasi data dan ekspor dokumen.</p>
-                    <div class="mt-5 flex items-center gap-2">
-                        <span class="tag-chip" style="background: rgba(16,185,129,0.1); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.2);">Pelaporan</span>
-                        <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Translokasi</span>
-                    </div>
-                </div>
-            </a>
+                </a>
 
+            </div>
         </div>
 
-        <!-- Marquee -->
-        <div class="reveal mt-16 overflow-hidden py-5 marquee-bar rounded-2xl" style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
+        <!-- Marquee — lebar penuh -->
+        <div class="reveal mt-20 overflow-hidden py-5 marquee-bar rounded-2xl" style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
             <div class="marquee-track flex items-center gap-10 whitespace-nowrap" style="width: max-content;">
                 <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-blue-400" data-icon="lucide:shield-check" data-width="14"></span> Data Terenkripsi</span>
                 <span class="text-slate-700">✦</span>
@@ -564,8 +552,8 @@
             </div>
         </div>
 
-        <!-- Footer -->
-        <footer class="reveal mt-16 text-center">
+        <!-- Footer — lebar penuh -->
+        <footer class="reveal mt-20 text-center">
             <div class="flex items-center justify-center gap-3 mb-3">
                 <img src="https://z-cdn-media.chatglm.cn/files/b8bffa74-ccd7-43df-ac0a-7d38232e3901.png?auth_key=1872868863-b6cd966dc51a4c34aa738032b487a895-0-e6beed34fb7fb9a9650976366f590c26" style="width:36px;height:auto" alt="Logo BPS" class="rounded">
                 <div class="flex flex-col items-start leading-none">
