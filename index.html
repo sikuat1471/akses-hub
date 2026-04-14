@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIKUAT — Portal Aplikasi BPS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 'inter': ['Inter', 'sans-serif'] },
+                    colors: {
+                        bps: {
+                            50: '#eef4fa',
+                            100: '#d5e5f3',
+                            200: '#adcde8',
+                            300: '#78aad8',
+                            400: '#4585c3',
+                            500: '#2669ad',
+                            600: '#1b5390',
+                            700: '#164577',
+                            800: '#143962',
+                            900: '#003366',
+                            950: '#001f3d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #070f1e;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #070f1e; }
+        ::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse 90% 55% at 50% -10%, rgba(30,80,160,0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 70% 45% at 85% 55%, rgba(25,65,140,0.20) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 55% at 5% 80%, rgba(196,163,90,0.05) 0%, transparent 50%),
+                linear-gradient(180deg, #070f1e 0%, #0b1830 30%, #0e2040 60%, #091424 100%);
+            pointer-events: none;
+        }
+
+        .grid-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image:
+                linear-gradient(rgba(100,160,255,0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(100,160,255,0.15) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 60%);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 60%);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px) scale(0.98);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: blur(6px);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+        .delay-500 { transition-delay: 500ms; }
+        .delay-600 { transition-delay: 600ms; }
+        .delay-700 { transition-delay: 700ms; }
+
+        .app-card {
+            position: relative;
+            border-radius: 24px;
+            padding: 0;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .card-blue {
+            background: linear-gradient(145deg, rgba(20,70,150,0.35), rgba(11,24,48,0.70));
+            border: 1px solid rgba(59,130,246,0.22);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(59,130,246,0.10);
+        }
+        .card-blue:hover {
+            border-color: rgba(59,130,246,0.45);
+            box-shadow: 0 8px 40px rgba(59,130,246,0.18), 0 0 60px rgba(59,130,246,0.06), inset 0 1px 0 rgba(59,130,246,0.18);
+            transform: translateY(-6px);
+        }
+        .card-blue::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59,130,246,0.10), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .card-blue:hover::after { opacity: 1; }
+
+        .card-teal {
+            background: linear-gradient(145deg, rgba(0,77,77,0.30), rgba(11,24,48,0.70));
+            border: 1px solid rgba(20,184,166,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(20,184,166,0.08);
+        }
+        .card-teal:hover {
+            border-color: rgba(20,184,166,0.4);
+            box-shadow: 0 8px 40px rgba(20,184,166,0.15), 0 0 60px rgba(20,184,166,0.05), inset 0 1px 0 rgba(20,184,166,0.15);
+            transform: translateY(-6px);
+        }
+        .card-teal::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(20,184,166,0.08), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .card-teal:hover::after { opacity: 1; }
+
+        .card-violet {
+            background: linear-gradient(145deg, rgba(67,30,120,0.30), rgba(11,24,48,0.70));
+            border: 1px solid rgba(139,92,246,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(139,92,246,0.08);
+        }
+        .card-violet:hover {
+            border-color: rgba(139,92,246,0.4);
+            box-shadow: 0 8px 40px rgba(139,92,246,0.15), 0 0 60px rgba(139,92,246,0.05), inset 0 1px 0 rgba(139,92,246,0.15);
+            transform: translateY(-6px);
+        }
+        .card-violet::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(139,92,246,0.08), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .card-violet:hover::after { opacity: 1; }
+
+        .card-gold {
+            background: linear-gradient(145deg, rgba(120,85,10,0.25), rgba(11,24,48,0.70));
+            border: 1px solid rgba(196,163,90,0.25);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(196,163,90,0.1);
+        }
+        .card-gold:hover {
+            border-color: rgba(196,163,90,0.5);
+            box-shadow: 0 8px 40px rgba(196,163,90,0.15), 0 0 60px rgba(196,163,90,0.05), inset 0 1px 0 rgba(196,163,90,0.2);
+            transform: translateY(-6px);
+        }
+        .card-gold::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(196,163,90,0.08), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .card-gold:hover::after { opacity: 1; }
+
+        .card-rose {
+            background: linear-gradient(145deg, rgba(120,20,50,0.25), rgba(11,24,48,0.70));
+            border: 1px solid rgba(244,63,94,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(244,63,94,0.08);
+        }
+        .card-rose:hover {
+            border-color: rgba(244,63,94,0.4);
+            box-shadow: 0 8px 40px rgba(244,63,94,0.15), 0 0 60px rgba(244,63,94,0.05), inset 0 1px 0 rgba(244,63,94,0.15);
+            transform: translateY(-6px);
+        }
+        .card-rose::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(244,63,94,0.08), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .card-rose:hover::after { opacity: 1; }
+
+        .card-emerald {
+            background: linear-gradient(145deg, rgba(0,77,40,0.25), rgba(11,24,48,0.70));
+            border: 1px solid rgba(16,185,129,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(16,185,129,0.08);
+        }
+        .card-emerald:hover {
+            border-color: rgba(16,185,129,0.4);
+            box-shadow: 0 8px 40px rgba(16,185,129,0.15), 0 0 60px rgba(16,185,129,0.05), inset 0 1px 0 rgba(16,185,129,0.15);
+            transform: translateY(-6px);
+        }
+        .card-emerald::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(16,185,129,0.08), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .card-emerald:hover::after { opacity: 1; }
+
+        .card-glow {
+            height: 3px;
+            width: 100%;
+            border-radius: 24px 24px 0 0;
+            transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s;
+        }
+        .app-card:hover .card-glow {
+            height: 4px;
+            filter: brightness(1.3);
+        }
+
+        .icon-pill {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .app-card:hover .icon-pill {
+            transform: scale(1.08) rotate(-2deg);
+        }
+
+        .go-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            flex-shrink: 0;
+        }
+        .go-btn .iconify { transition: color 0.3s; }
+
+        .app-card:hover .go-btn {
+            transform: translateX(2px);
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .tag-chip {
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+
+        .top-bar {
+            background: rgba(7,15,30,0.82);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(30,80,160,0.25);
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 10px;
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.25);
+            font-size: 11px;
+            font-weight: 600;
+            color: #34d399;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+        .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .marquee-track { animation: marquee 35s linear infinite; }
+        .marquee-track:hover { animation-play-state: paused; }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 40%, #c4a35a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gold-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(196,163,90,0.5), transparent);
+        }
+
+        @keyframes float-1 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+        @keyframes float-2 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(-3deg); }
+        }
+        .float-1 { animation: float-1 6s ease-in-out infinite; }
+        .float-2 { animation: float-2 8s ease-in-out infinite 1s; }
+        .float-3 { animation: float-1 7s ease-in-out infinite 2s; }
+
+        .marquee-bar {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .hero-stat {
+            text-align: center;
+            padding: 16px 8px;
+            border-radius: 16px;
+            background: rgba(30,80,160,0.06);
+            border: 1px solid rgba(59,130,246,0.10);
+            transition: all 0.3s ease;
+        }
+        .hero-stat:hover {
+            background: rgba(30,80,160,0.12);
+            border-color: rgba(59,130,246,0.20);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="font-inter min-h-screen relative text-white">
+
+    <div class="bg-layer"></div>
+    <div class="grid-pattern"></div>
+
+    <div class="fixed top-32 right-24 w-16 h-16 rounded-2xl float-1 z-0 hidden xl:block" style="background: rgba(30,80,160,0.18); border: 1px solid rgba(59,130,246,0.18);"></div>
+    <div class="fixed top-64 left-16 w-10 h-10 rounded-full float-2 z-0 hidden xl:block" style="background: rgba(196,163,90,0.08); border: 1px solid rgba(196,163,90,0.1);"></div>
+    <div class="fixed bottom-40 right-40 w-12 h-12 rounded-xl float-3 z-0 hidden xl:block" style="background: rgba(20,184,166,0.08); border: 1px solid rgba(20,184,166,0.1);"></div>
+    <div class="fixed bottom-24 left-1/3 w-8 h-8 rounded-lg float-2 z-0 hidden 2xl:block" style="background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.08);"></div>
+
+    <!-- Top bar -->
+    <div class="fixed top-0 left-0 right-0 z-50 top-bar">
+        <div class="w-full px-6 md:px-10 lg:px-16 xl:px-24 h-14 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="https://z-cdn-media.chatglm.cn/files/b8bffa74-ccd7-43df-ac0a-7d38232e3901.png?auth_key=1872868863-b6cd966dc51a4c34aa738032b487a895-0-e6beed34fb7fb9a9650976366f590c26" style="width:32px;height:auto" alt="Logo BPS" class="rounded">
+                <div class="flex flex-col leading-none">
+                    <span class="text-[13px] font-bold text-white tracking-tight">SIKUAT</span>
+                    <span class="text-[9px] text-blue-300/70 font-medium tracking-wide">BPS KOTA PEKANBARU</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="live-badge">
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></div>
+                    Sistem Aktif
+                </div>
+                <span class="text-[11px] text-slate-500 hidden sm:block" id="clock"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <main class="relative z-10 w-full px-6 md:px-10 lg:px-16 xl:px-24 pt-28 pb-20">
+
+        <!-- Hero -->
+        <div class="text-center mb-16 max-w-3xl mx-auto">
+            <div class="reveal delay-100 flex flex-col items-center mb-5">
+                <img src="https://z-cdn-media.chatglm.cn/files/b8bffa74-ccd7-43df-ac0a-7d38232e3901.png?auth_key=1872868863-b6cd966dc51a4c34aa738032b487a895-0-e6beed34fb7fb9a9650976366f590c26" style="width:70px;height:auto" alt="Logo BPS" class="mb-5 drop-shadow-lg">
+                <p class="reveal delay-200 text-xl md:text-2xl font-bold text-slate-400 leading-relaxed mb-5">
+                    BADAN PUSAT STATISTIK
+                </p>
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1]">
+                    <span class="text-white">SI</span><span class="gradient-text">KUAT</span><span class="text-white">-HUB</span>
+                </h1>
+            </div>
+
+            <p class="reveal delay-200 text-base md:text-lg text-slate-400 max-w-lg mx-auto leading-relaxed">
+                Pusat akses semua modul aplikasi dalam satu tempat yang terorganisir.
+            </p>
+
+            <div class="reveal delay-200 gold-line max-w-xs mx-auto mt-6 mb-2"></div>
+
+            </div>
+
+        <!-- App Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 gap-5 max-w-[1800px] mx-auto">
+
+            <!-- Card 1: Matrik Kegiatan — BLUE -->
+            <a href="https://sikuat1471.github.io/matrikkegiatan/" target="_blank" class="app-card card-blue reveal delay-100 group">
+                <div class="card-glow" style="background: linear-gradient(90deg, #3b82f6, #60a5fa);"></div>
+                <div class="p-7 flex-1 flex flex-col relative z-10">
+                    <div class="flex items-start justify-between mb-5">
+                        <div class="icon-pill" style="background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.22);">
+                            <span class="iconify" style="color: #60a5fa;" data-icon="lucide:table-2" data-width="24"></span>
+                        </div>
+                        <div class="go-btn">
+                            <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                        </div>
+                    </div>
+                    <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Matrik Kegiatan</h3>
+                    <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Pengelolaan matriks kegiatan untuk perencanaan dan monitoring program kerja.</p>
+                    <div class="mt-5 flex items-center gap-2">
+                        <span class="tag-chip" style="background: rgba(59,130,246,0.1); color: #93c5fd; border: 1px solid rgba(59,130,246,0.22);">Perencanaan</span>
+                        <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Monitoring</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 2: Persediaan — TEAL -->
+            <a href="https://sikuat1471.github.io/persediaan/" target="_blank" class="app-card card-teal reveal delay-200 group">
+                <div class="card-glow" style="background: linear-gradient(90deg, #14b8a6, #2dd4bf);"></div>
+                <div class="p-7 flex-1 flex flex-col relative z-10">
+                    <div class="flex items-start justify-between mb-5">
+                        <div class="icon-pill" style="background: rgba(20,184,166,0.12); border: 1px solid rgba(20,184,166,0.2);">
+                            <span class="iconify" style="color: #2dd4bf;" data-icon="lucide:package-search" data-width="24"></span>
+                        </div>
+                        <div class="go-btn">
+                            <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                        </div>
+                    </div>
+                    <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Persediaan</h3>
+                    <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Manajemen persediaan barang, pencatatan stok masuk dan keluar secara terintegrasi.</p>
+                    <div class="mt-5 flex items-center gap-2">
+                        <span class="tag-chip" style="background: rgba(20,184,166,0.1); color: #5eead4; border: 1px solid rgba(20,184,166,0.2);">Inventaris</span>
+                        <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Stok</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 3: Register — VIOLET -->
+            <a href="https://sikuat1471.github.io/digitasipenomoran/" target="_blank" class="app-card card-violet reveal delay-300 group">
+                <div class="card-glow" style="background: linear-gradient(90deg, #8b5cf6, #a78bfa);"></div>
+                <div class="p-7 flex-1 flex flex-col relative z-10">
+                    <div class="flex items-start justify-between mb-5">
+                        <div class="icon-pill" style="background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.2);">
+                            <span class="iconify" style="color: #a78bfa;" data-icon="lucide:book-number" data-width="24"></span>
+                        </div>
+                        <div class="go-btn">
+                            <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                        </div>
+                    </div>
+                    <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Register</h3>
+                    <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Sistem digitasi penomoran dan registrasi dokumen otomatis untuk administrasi.</p>
+                    <div class="mt-5 flex items-center gap-2">
+                        <span class="tag-chip" style="background: rgba(139,92,246,0.1); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.2);">Dokumen</span>
+                        <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Penomoran</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 4: Pajak TER — GOLD -->
+            <a href="https://sikuat1471.github.io/perhitunganpajakter/" target="_blank" class="app-card card-gold reveal delay-400 group">
+                <div class="card-glow" style="background: linear-gradient(90deg, #c4a35a, #f0d78c);"></div>
+                <div class="p-7 flex-1 flex flex-col relative z-10">
+                    <div class="flex items-start justify-between mb-5">
+                        <div class="icon-pill" style="background: rgba(196,163,90,0.12); border: 1px solid rgba(196,163,90,0.25);">
+                            <span class="iconify" style="color: #f0d78c;" data-icon="lucide:calculator" data-width="24"></span>
+                        </div>
+                        <div class="go-btn">
+                            <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                        </div>
+                    </div>
+                    <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Pajak TER</h3>
+                    <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Perhitungan pajak Tera dan Terekam secara akurat dengan simulasi otomatis.</p>
+                    <div class="mt-5 flex items-center gap-2">
+                        <span class="tag-chip" style="background: rgba(196,163,90,0.1); color: #f0d78c; border: 1px solid rgba(196,163,90,0.25);">Pajak</span>
+                        <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Simulasi</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 5: Lembur — ROSE -->
+            <a href="https://sikuat1471.github.io/perhitunganlembur/" target="_blank" class="app-card card-rose reveal delay-500 group">
+                <div class="card-glow" style="background: linear-gradient(90deg, #f43f5e, #fb7185);"></div>
+                <div class="p-7 flex-1 flex flex-col relative z-10">
+                    <div class="flex items-start justify-between mb-5">
+                        <div class="icon-pill" style="background: rgba(244,63,94,0.12); border: 1px solid rgba(244,63,94,0.2);">
+                            <span class="iconify" style="color: #fb7185;" data-icon="lucide:clock-4" data-width="24"></span>
+                        </div>
+                        <div class="go-btn">
+                            <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                        </div>
+                    </div>
+                    <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Lembur</h3>
+                    <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Kalkulasi jam lembur pegawai dengan perhitungan upah lembur yang sesuai aturan.</p>
+                    <div class="mt-5 flex items-center gap-2">
+                        <span class="tag-chip" style="background: rgba(244,63,94,0.1); color: #fda4af; border: 1px solid rgba(244,63,94,0.2);">Kepegawaian</span>
+                        <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Upah</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 6: Laporan — EMERALD -->
+            <a href="https://sikuat1471.github.io/laporantranslok/" target="_blank" class="app-card card-emerald reveal delay-600 group">
+                <div class="card-glow" style="background: linear-gradient(90deg, #10b981, #34d399);"></div>
+                <div class="p-7 flex-1 flex flex-col relative z-10">
+                    <div class="flex items-start justify-between mb-5">
+                        <div class="icon-pill" style="background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.2);">
+                            <span class="iconify" style="color: #34d399;" data-icon="lucide:file-bar-chart" data-width="24"></span>
+                        </div>
+                        <div class="go-btn">
+                            <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                        </div>
+                    </div>
+                    <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Laporan</h3>
+                    <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Laporan translokasi lengkap dengan visualisasi data dan ekspor dokumen.</p>
+                    <div class="mt-5 flex items-center gap-2">
+                        <span class="tag-chip" style="background: rgba(16,185,129,0.1); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.2);">Pelaporan</span>
+                        <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Translokasi</span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- Marquee -->
+        <div class="reveal mt-16 overflow-hidden py-5 marquee-bar rounded-2xl max-w-[1800px] mx-auto" style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
+            <div class="marquee-track flex items-center gap-10 whitespace-nowrap" style="width: max-content;">
+                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-blue-400" data-icon="lucide:shield-check" data-width="14"></span> Data Terenkripsi</span>
+                <span class="text-slate-700">✦</span>
+                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-amber-400" data-icon="lucide:zap" data-width="14"></span> Akses Cepat</span>
+                <span class="text-slate-700">✦</span>
+                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-teal-400" data-icon="lucide:cloud" data-width="14"></span> BerAKHLAK</span>
+                <span class="text-slate-700">✦</span>
+                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-teal-400" data-icon="lucide:cloud" data-width="14"></span> Berorientasi Pelayanan</span>
+                <span class="text-slate-700">✦</span>
+                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-violet-400" data-icon="lucide:smartphone" data-width="14"></span> Akuntabel</span>
+                <span class="text-slate-700">✦</span>
+                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-emerald-400" data-icon="lucide:lock" data-width="14"></span> Kompeten</span>
+                <span class="text-slate-700">✦</span>
+                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-rose-400" data-icon="lucide:refresh-cw" data-width="14"></span> Harmonis</span>
+                <span class="text-slate-700">✦</span>
+                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-blue-400" data-icon="lucide:shield-check" data-width="14"></span> Loyal</span>
+                <span class="text-slate-700">✦</span>
+                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-amber-400" data-icon="lucide:zap" data-width="14"></span> Adaptif</span>
+                <span class="text-slate-700">✦</span>
+                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-teal-400" data-icon="lucide:cloud" data-width="14"></span> dan Kolaboratif</span>
+                <span class="text-slate-700">✦</span>
+                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-violet-400" data-icon="lucide:smartphone" data-width="14"></span> Terima Kasih</span>
+                <span class="text-slate-700">✦</span>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="reveal mt-16 text-center">
+            <div class="flex items-center justify-center gap-3 mb-3">
+                <img src="https://z-cdn-media.chatglm.cn/files/b8bffa74-ccd7-43df-ac0a-7d38232e3901.png?auth_key=1872868863-b6cd966dc51a4c34aa738032b487a895-0-e6beed34fb7fb9a9650976366f590c26" style="width:36px;height:auto" alt="Logo BPS" class="rounded">
+                <div class="flex flex-col items-start leading-none">
+                    <span class="text-sm font-bold text-white tracking-tight">SIKUAT</span>
+                    <span class="text-[9px] text-blue-300/60 font-medium tracking-wide">BADAN PUSAT STATISTIK</span>
+                </div>
+            </div>
+            <p class="text-xs text-slate-500 mb-2">Sistem Informasi Kuantitatif</p>
+            <div class="gold-line max-w-[120px] mx-auto mb-3"></div>
+            <p class="text-[11px] text-slate-600">©copyright_putu — Dibuat untuk mempermudah pengelolaan data</p>
+        </footer>
+    </main>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
+            document.getElementById('clock').textContent = now.toLocaleDateString('id-ID', options);
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        document.querySelectorAll('.app-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', x + '%');
+                card.style.setProperty('--mouse-y', y + '%');
+            });
+        });
+    </script>
+</body>
+</html>
