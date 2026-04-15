@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIKUAT — Portal Aplikasi BPS</title>
+    <title>SIKUAT-Portal Aplikasi BPS</title>
     <link rel="icon" type="image/png" href="https://z-cdn-media.chatglm.cn/files/b8bffa74-ccd7-43df-ac0a-7d38232e3901.png?auth_key=1872868863-b6cd966dc51a4c34aa738032b487a895-0-e6beed34fb7fb9a9650976366f590c26">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -70,6 +71,7 @@
             text-decoration: none; display: flex; flex-direction: column;
             overflow: hidden; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            cursor: pointer;
         }
 
         .card-blue {
@@ -186,16 +188,12 @@
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative; flex-shrink: 0;
         }
-        .app-card:hover .logo-container {
-            transform: scale(1.08) rotate(-2deg);
-        }
+        .app-card:hover .logo-container { transform: scale(1.08) rotate(-2deg); }
         .logo-container svg {
             width: 36px; height: 36px;
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .app-card:hover .logo-container svg {
-            transform: scale(1.05);
-        }
+        .app-card:hover .logo-container svg { transform: scale(1.05); }
 
         .logo-badge {
             position: absolute; bottom: -3px; right: -3px;
@@ -281,6 +279,81 @@
             pointer-events: none;
         }
         .app-card:hover .logo-ambient { opacity: 1; }
+
+        /* ===== APP VIEW OVERLAY ===== */
+        .app-overlay {
+            position: fixed; inset: 0; z-index: 100;
+            background: #060e1a;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.45s;
+        }
+        .app-overlay.open {
+            opacity: 1; visibility: visible;
+        }
+        .app-overlay-header {
+            position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+            background: rgba(6,14,26,0.85);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(0,51,102,0.25);
+        }
+        .app-overlay .app-iframe {
+            width: 100%; height: 100%; border: none;
+            background: #fff; border-radius: 0;
+        }
+        .app-overlay-header .title-area {
+            opacity: 0; transform: translateY(-10px);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+        }
+        .app-overlay.open .app-overlay-header .title-area {
+            opacity: 1; transform: translateY(0);
+        }
+        .app-overlay-header .back-btn {
+            width: 38px; height: 38px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer; transition: all 0.3s;
+        }
+        .app-overlay-header .back-btn:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateX(-2px);
+        }
+        .title-glow-bar {
+            height: 3px; width: 0; border-radius: 2px;
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
+        }
+        .app-overlay.open .title-glow-bar { width: 60px; }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .loading-bar {
+            position: absolute; top: 0; left: 0; right: 0; height: 3px; z-index: 20;
+            overflow: hidden;
+        }
+        .loading-bar::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(96,165,250,0.7), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 1.2s ease-in-out infinite;
+        }
+        .loading-bar.hidden { opacity: 0; transition: opacity 0.3s; }
+
+        .open-direct-btn {
+            padding: 7px 16px; border-radius: 10px;
+            font-size: 12px; font-weight: 600;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8; cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; gap: 6px;
+            text-decoration: none;
+        }
+        .open-direct-btn:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.2);
+            color: #fff;
+        }
     </style>
 </head>
 <body class="font-inter min-h-screen relative text-white">
@@ -293,7 +366,7 @@
     <div class="fixed bottom-32 right-32 w-12 h-12 rounded-xl float-3 z-0 hidden lg:block" style="background: rgba(20,184,166,0.08); border: 1px solid rgba(20,184,166,0.1);"></div>
 
     <!-- Top bar -->
-    <div class="fixed top-0 left-0 right-0 z-50 top-bar">
+    <div class="fixed top-0 left-0 right-0 z-50 top-bar" id="mainTopBar">
         <div class="max-w-[1600px] mx-auto px-8 h-14 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <img src="https://z-cdn-media.chatglm.cn/files/b8bffa74-ccd7-43df-ac0a-7d38232e3901.png?auth_key=1872868863-b6cd966dc51a4c34aa738032b487a895-0-e6beed34fb7fb9a9650976366f590c26" style="width:32px;height:auto" alt="Logo BPS" class="rounded">
@@ -305,17 +378,47 @@
             <div class="flex items-center gap-4">
                 <div class="live-badge">
                     <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></div>
-                    Sistem Aktif
+                    Online
                 </div>
                 <span class="text-[11px] text-slate-500 hidden sm:block" id="clock"></span>
             </div>
         </div>
     </div>
 
-    <!-- Main -->
-    <main class="relative z-10 max-w-[1600px] mx-auto px-8 pt-[58px] pb-20">
+    <!-- App Overlay View -->
+    <div class="app-overlay" id="appOverlay">
+        <div class="loading-bar" id="loadingBar"></div>
+        <div class="app-overlay-header">
+            <div class="max-w-[1600px] mx-auto px-6 h-14 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="back-btn" id="backBtn" title="Kembali ke Portal">
+                        <span class="iconify text-slate-400" data-icon="lucide:arrow-left" data-width="18"></span>
+                    </div>
+                    <div class="title-area flex items-center gap-3">
+                        <div id="overlayIcon" class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.2);">
+                            <span class="iconify" data-icon="lucide:box" data-width="16" style="color:#60a5fa"></span>
+                        </div>
+                        <div>
+                            <h2 id="overlayTitle" class="text-[14px] font-bold text-white tracking-tight leading-none">Nama Aplikasi</h2>
+                            <div class="title-glow-bar mt-1.5" id="titleGlowBar" style="background: linear-gradient(90deg, #3b82f6, #60a5fa);"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a id="openDirectBtn" class="open-direct-btn" href="#" target="_blank">
+                        <span class="iconify" data-icon="lucide:external-link" data-width="13"></span>
+                        <span class="hidden sm:inline">Buka Tab Baru</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <iframe id="appIframe" class="app-iframe" style="padding-top: 56px;" src="about:blank"></iframe>
+    </div>
 
-        <!-- Hero — lebar penuh -->
+    <!-- Main -->
+    <main class="relative z-10 max-w-[1600px] mx-auto px-8 pt-[58px] pb-20" id="mainContent">
+
+        <!-- Hero -->
         <div class="text-center mb-20">
             <div class="reveal delay-100 flex flex-col items-center mb-5">
                 <img src="https://z-cdn-media.chatglm.cn/files/b8bffa74-ccd7-43df-ac0a-7d38232e3901.png?auth_key=1872868863-b6cd966dc51a4c34aa738032b487a895-0-e6beed34fb7fb9a9650976366f590c26" style="width:85px;height:auto" alt="Logo BPS" class="mb-5 drop-shadow-lg">
@@ -330,12 +433,17 @@
             <div class="reveal delay-200 gold-line max-w-xs mx-auto mt-6 mb-2"></div>
         </div>
 
-        <!-- App Cards — dibatasi lebarnya, tetap di tengah -->
+        <!-- App Cards -->
         <div class="max-w-[1080px] mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
                 <!-- Card 1: Matrik Kegiatan — BLUE -->
-                <a href="https://sikuat1471.github.io/matrikkegiatan/" target="_blank" class="app-card card-blue reveal delay-100 group">
+                <div class="app-card card-blue reveal delay-100 group"
+                     data-name="Matrik Kegiatan"
+                     data-url="https://sikuat1471.github.io/matrikkegiatan/"
+                     data-color="#3b82f6"
+                     data-color-light="#60a5fa"
+                     data-icon="lucide:layout-grid">
                     <div class="card-glow" style="background: linear-gradient(90deg, #3b82f6, #60a5fa);"></div>
                     <div class="p-7 flex-1 flex flex-col relative z-10">
                         <div class="flex items-start justify-between mb-5">
@@ -363,10 +471,15 @@
                             <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Monitoring</span>
                         </div>
                     </div>
-                </a>
+                </div>
 
                 <!-- Card 2: Persediaan — TEAL -->
-                <a href="https://sikuat1471.github.io/persediaan/" target="_blank" class="app-card card-teal reveal delay-200 group">
+                <div class="app-card card-teal reveal delay-200 group"
+                     data-name="Persediaan"
+                     data-url="https://sikuat1471.github.io/persediaan/"
+                     data-color="#14b8a6"
+                     data-color-light="#2dd4bf"
+                     data-icon="lucide:package">
                     <div class="card-glow" style="background: linear-gradient(90deg, #14b8a6, #2dd4bf);"></div>
                     <div class="p-7 flex-1 flex flex-col relative z-10">
                         <div class="flex items-start justify-between mb-5">
@@ -393,10 +506,15 @@
                             <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Stok</span>
                         </div>
                     </div>
-                </a>
+                </div>
 
                 <!-- Card 3: Register — VIOLET -->
-                <a href="https://sikuat1471.github.io/digitasipenomoran/" target="_blank" class="app-card card-violet reveal delay-300 group">
+                <div class="app-card card-violet reveal delay-300 group"
+                     data-name="Register"
+                     data-url="https://sikuat1471.github.io/digitasipenomoran/"
+                     data-color="#8b5cf6"
+                     data-color-light="#a78bfa"
+                     data-icon="lucide:file-hash">
                     <div class="card-glow" style="background: linear-gradient(90deg, #8b5cf6, #a78bfa);"></div>
                     <div class="p-7 flex-1 flex flex-col relative z-10">
                         <div class="flex items-start justify-between mb-5">
@@ -423,10 +541,15 @@
                             <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Penomoran</span>
                         </div>
                     </div>
-                </a>
+                </div>
 
                 <!-- Card 4: Pajak TER — GOLD -->
-                <a href="https://sikuat1471.github.io/perhitunganpajakter/" target="_blank" class="app-card card-gold reveal delay-400 group">
+                <div class="app-card card-gold reveal delay-400 group"
+                     data-name="Pajak TER"
+                     data-url="https://sikuat1471.github.io/perhitunganpajakter/"
+                     data-color="#c4a35a"
+                     data-color-light="#f0d78c"
+                     data-icon="lucide:calculator">
                     <div class="card-glow" style="background: linear-gradient(90deg, #c4a35a, #f0d78c);"></div>
                     <div class="p-7 flex-1 flex flex-col relative z-10">
                         <div class="flex items-start justify-between mb-5">
@@ -455,10 +578,15 @@
                             <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Simulasi</span>
                         </div>
                     </div>
-                </a>
+                </div>
 
                 <!-- Card 5: Lembur — ROSE -->
-                <a href="https://sikuat1471.github.io/perhitunganlembur/" target="_blank" class="app-card card-rose reveal delay-500 group">
+                <div class="app-card card-rose reveal delay-500 group"
+                     data-name="Lembur"
+                     data-url="https://sikuat1471.github.io/perhitunganlembur/"
+                     data-color="#f43f5e"
+                     data-color-light="#fb7185"
+                     data-icon="lucide:clock">
                     <div class="card-glow" style="background: linear-gradient(90deg, #f43f5e, #fb7185);"></div>
                     <div class="p-7 flex-1 flex flex-col relative z-10">
                         <div class="flex items-start justify-between mb-5">
@@ -489,10 +617,15 @@
                             <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Upah</span>
                         </div>
                     </div>
-                </a>
+                </div>
 
                 <!-- Card 6: Laporan — EMERALD -->
-                <a href="https://sikuat1471.github.io/laporantranslok/" target="_blank" class="app-card card-emerald reveal delay-600 group">
+                <div class="app-card card-emerald reveal delay-600 group"
+                     data-name="Laporan"
+                     data-url="https://sikuat1471.github.io/laporantranslok/"
+                     data-color="#10b981"
+                     data-color-light="#34d399"
+                     data-icon="lucide:bar-chart-3">
                     <div class="card-glow" style="background: linear-gradient(90deg, #10b981, #34d399);"></div>
                     <div class="p-7 flex-1 flex flex-col relative z-10">
                         <div class="flex items-start justify-between mb-5">
@@ -519,19 +652,16 @@
                             <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Translokasi</span>
                         </div>
                     </div>
-                </a>
+                </div>
 
             </div>
         </div>
 
-        <!-- Marquee — lebar penuh -->
+        <!-- Marquee -->
         <div class="reveal mt-20 overflow-hidden py-5 marquee-bar rounded-2xl" style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
             <div class="marquee-track flex items-center gap-10 whitespace-nowrap" style="width: max-content;">
-                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-blue-400" data-icon="lucide:shield-check" data-width="14"></span> Data Terenkripsi</span>
-                <span class="text-slate-700">✦</span>
-                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-amber-400" data-icon="lucide:zap" data-width="14"></span> Akses Cepat</span>
-                <span class="text-slate-700">✦</span>
-                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-teal-400" data-icon="lucide:cloud" data-width="14"></span> BerAKHLAK</span>
+                <span class="text-green-700">✦✦✦✦</span>
+                <span class="text-sm text-red-500 font-bold flex items-center gap-2"><span class="iconify text-teal-400" data-icon="lucide:cloud" data-width="14"></span> BerAKHLAK</span>
                 <span class="text-slate-700">✦</span>
                 <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-teal-400" data-icon="lucide:cloud" data-width="14"></span> Berorientasi Pelayanan</span>
                 <span class="text-slate-700">✦</span>
@@ -546,16 +676,14 @@
                 <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-amber-400" data-icon="lucide:zap" data-width="14"></span> Adaptif</span>
                 <span class="text-slate-700">✦</span>
                 <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-teal-400" data-icon="lucide:cloud" data-width="14"></span> dan Kolaboratif</span>
-                <span class="text-slate-700">✦</span>
-                <span class="text-sm text-slate-500 font-medium flex items-center gap-2"><span class="iconify text-violet-400" data-icon="lucide:smartphone" data-width="14"></span> Terima Kasih</span>
-                <span class="text-slate-700">✦</span>
+                <span class="text-green-700">✦✦✦✦</span>
             </div>
         </div>
 
-        <!-- Footer — lebar penuh -->
+        <!-- Footer -->
         <footer class="reveal mt-20 text-center">
             <div class="flex items-center justify-center gap-3 mb-3">
-            <img src="https://z-cdn-media.chatglm.cn/files/b8bffa74-ccd7-43df-ac0a-7d38232e3901.png?auth_key=1872868863-b6cd966dc51a4c34aa738032b487a895-0-e6beed34fb7fb9a9650976366f590c26" style="width:36px;height:auto" alt="Logo BPS" class="rounded">
+                <img src="https://z-cdn-media.chatglm.cn/files/b8bffa74-ccd7-43df-ac0a-7d38232e3901.png?auth_key=1872868863-b6cd966dc51a4c34aa738032b487a895-0-e6beed34fb7fb9a9650976366f590c26" style="width:36px;height:auto" alt="Logo BPS" class="rounded">
             </div>
             <p class="text-xs text-slate-500 mb-2">Sistem Informasi Terpadu</p>
             <div class="gold-line max-w-[120px] mx-auto mb-3"></div>
@@ -563,7 +691,9 @@
         </footer>
     </main>
 
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <script>
+        // ===== CLOCK =====
         function updateClock() {
             const now = new Date();
             const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
@@ -572,6 +702,7 @@
         updateClock();
         setInterval(updateClock, 1000);
 
+        // ===== REVEAL ON SCROLL =====
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('active');
@@ -579,6 +710,7 @@
         }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        // ===== CARD MOUSE TRACKING =====
         document.querySelectorAll('.app-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
@@ -587,6 +719,109 @@
                 card.style.setProperty('--mouse-x', x + '%');
                 card.style.setProperty('--mouse-y', y + '%');
             });
+        });
+
+        // ===== APP OVERLAY SYSTEM =====
+        const overlay = document.getElementById('appOverlay');
+        const iframe = document.getElementById('appIframe');
+        const overlayTitle = document.getElementById('overlayTitle');
+        const overlayIcon = document.getElementById('overlayIcon');
+        const titleGlowBar = document.getElementById('titleGlowBar');
+        const loadingBar = document.getElementById('loadingBar');
+        const openDirectBtn = document.getElementById('openDirectBtn');
+        const backBtn = document.getElementById('backBtn');
+        const mainTopBar = document.getElementById('mainTopBar');
+
+        let currentAppName = '';
+
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r},${g},${b},${alpha})`;
+        }
+
+        function openApp(card) {
+            const name = card.dataset.name;
+            const url = card.dataset.url;
+            const color = card.dataset.color;
+            const colorLight = card.dataset.colorLight;
+            const icon = card.dataset.icon;
+
+            currentAppName = name;
+
+            // Update document title
+            document.title = name + ' — SIKUAT-HUB';
+
+            // Update overlay header
+            overlayTitle.textContent = name;
+            overlayIcon.style.background = hexToRgba(color, 0.15);
+            overlayIcon.style.borderColor = hexToRgba(color, 0.25);
+            overlayIcon.innerHTML = `<span class="iconify" data-icon="${icon}" data-width="16" style="color:${colorLight}"></span>`;
+            titleGlowBar.style.background = `linear-gradient(90deg, ${color}, ${colorLight})`;
+
+            // Update direct link
+            openDirectBtn.href = url;
+
+            // Show loading bar
+            loadingBar.classList.remove('hidden');
+
+            // Hide main top bar, show overlay
+            mainTopBar.style.opacity = '0';
+            mainTopBar.style.pointerEvents = 'none';
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            // Load iframe
+            iframe.src = url;
+
+            // Re-scan iconify in overlay
+            if (window.Iconify) {
+                setTimeout(() => Iconify.scan(overlayIcon), 50);
+            }
+        }
+
+        function closeApp() {
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+
+            // Restore main top bar
+            setTimeout(() => {
+                mainTopBar.style.opacity = '1';
+                mainTopBar.style.pointerEvents = '';
+            }, 100);
+
+            // Restore title
+            document.title = 'SIKUAT-Portal Aplikasi BPS';
+
+            // Clear iframe after animation
+            setTimeout(() => {
+                iframe.src = 'about:blank';
+            }, 500);
+        }
+
+        // Iframe load complete
+        iframe.addEventListener('load', () => {
+            loadingBar.classList.add('hidden');
+        });
+
+        // Card click events
+        document.querySelectorAll('.app-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Don't interfere if clicking the direct link inside overlay
+                if (e.target.closest('.open-direct-btn')) return;
+                openApp(card);
+            });
+        });
+
+        // Back button
+        backBtn.addEventListener('click', closeApp);
+
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.classList.contains('open')) {
+                closeApp();
+            }
         });
     </script>
 </body>
