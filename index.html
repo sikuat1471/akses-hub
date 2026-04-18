@@ -65,6 +65,7 @@
         .delay-400 { transition-delay: 400ms; }
         .delay-500 { transition-delay: 500ms; }
         .delay-600 { transition-delay: 600ms; }
+        .delay-700 { transition-delay: 700ms; }
 
         .app-card {
             position: relative; border-radius: 24px; padding: 0;
@@ -175,6 +176,23 @@
             opacity: 0; transition: opacity 0.4s; pointer-events: none;
         }
         .card-emerald:hover::after { opacity: 1; }
+
+        .card-amber {
+            background: linear-gradient(145deg, rgba(120,60,0,0.22), rgba(10,22,40,0.7));
+            border: 1px solid rgba(245,158,11,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(245,158,11,0.08);
+        }
+        .card-amber:hover {
+            border-color: rgba(245,158,11,0.45);
+            box-shadow: 0 8px 40px rgba(245,158,11,0.15), 0 0 60px rgba(245,158,11,0.05), inset 0 1px 0 rgba(245,158,11,0.18);
+            transform: translateY(-6px);
+        }
+        .card-amber::after {
+            content: ''; position: absolute; inset: 0; border-radius: 24px;
+            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(245,158,11,0.08), transparent 40%);
+            opacity: 0; transition: opacity 0.4s; pointer-events: none;
+        }
+        .card-amber:hover::after { opacity: 1; }
 
         .card-glow {
             height: 3px; width: 100%; border-radius: 24px 24px 0 0;
@@ -366,7 +384,7 @@
     <div class="fixed bottom-32 right-32 w-12 h-12 rounded-xl float-3 z-0 hidden lg:block" style="background: rgba(20,184,166,0.08); border: 1px solid rgba(20,184,166,0.1);"></div>
 
     <!-- Top bar -->
-    <div class="fixed top-0 left-0 right-0 z-50 top-bar" id="mainTopBar">
+    <div class="fixed top-0 left-0 right-0 z-50 top-bar" id="mainTopBar" style="transition: opacity 0.3s;">
         <div class="max-w-[1600px] mx-auto px-8 h-14 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <img src="https://z-cdn-media.chatglm.cn/files/b8bffa74-ccd7-43df-ac0a-7d38232e3901.png?auth_key=1872868863-b6cd966dc51a4c34aa738032b487a895-0-e6beed34fb7fb9a9650976366f590c26" style="width:32px;height:auto" alt="Logo BPS" class="rounded">
@@ -654,6 +672,46 @@
                     </div>
                 </div>
 
+                <!-- Card 7: Mitra Statistik — AMBER -->
+                <div class="app-card card-amber reveal delay-700 group lg:col-start-2"
+                     data-name="Mitra Statistik"
+                     data-url="https://sikuat1471.github.io/kontrakkerja/"
+                     data-color="#f59e0b"
+                     data-color-light="#fbbf24"
+                     data-icon="lucide:handshake">
+                    <div class="card-glow" style="background: linear-gradient(90deg, #f59e0b, #fbbf24);"></div>
+                    <div class="p-7 flex-1 flex flex-col relative z-10">
+                        <div class="flex items-start justify-between mb-5">
+                            <div class="logo-container" style="background: linear-gradient(145deg, rgba(245,158,11,0.18), rgba(245,158,11,0.08)); border: 1px solid rgba(245,158,11,0.25);">
+                                <div class="logo-ambient" style="background: rgba(245,158,11,0.2);"></div>
+                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="3" width="30" height="30" rx="7" fill="rgba(245,158,11,0.06)" stroke="#fbbf24" stroke-width="1.5"/>
+                                    <!-- Left person silhouette -->
+                                    <circle cx="11" cy="13" r="3.2" fill="rgba(245,158,11,0.2)" stroke="#fbbf24" stroke-width="1"/>
+                                    <path d="M6 23C6 20 8.2 17.5 11 17.5C13.8 17.5 16 20 16 23" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" fill="rgba(245,158,11,0.08)"/>
+                                    <!-- Right person silhouette -->
+                                    <circle cx="25" cy="13" r="3.2" fill="rgba(245,158,11,0.2)" stroke="#fbbf24" stroke-width="1"/>
+                                    <path d="M20 23C20 20 22.2 17.5 25 17.5C27.8 17.5 30 20 30 23" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" fill="rgba(245,158,11,0.08)"/>
+                                    <!-- Handshake connector -->
+                                    <path d="M14 21C15.5 22.5 16.5 22.5 18 21.5C19.5 22.5 20.5 22.5 22 21" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.9"/>
+                                    <circle cx="18" cy="28" r="1.5" fill="#fbbf24" opacity="0.5"/>
+                                    <line x1="14" y1="28" x2="22" y2="28" stroke="#f59e0b" stroke-width="0.8" opacity="0.3"/>
+                                </svg>
+                                <div class="logo-badge" style="background: #f59e0b; color: #1a1a1a;">MS</div>
+                            </div>
+                            <div class="go-btn">
+                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
+                            </div>
+                        </div>
+                        <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Mitra Statistik</h3>
+                        <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Manajemen mitra statistik dan kontrak kerja untuk kerjasama eksternal terintegrasi.</p>
+                        <div class="mt-5 flex items-center gap-2">
+                            <span class="tag-chip" style="background: rgba(245,158,11,0.1); color: #fcd34d; border: 1px solid rgba(245,158,11,0.2);">Kontrak</span>
+                            <span class="tag-chip" style="background: rgba(255,255,255,0.04); color: #94a3b8; border: 1px solid rgba(255,255,255,0.06);">Mitra</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -808,7 +866,6 @@
         // Card click events
         document.querySelectorAll('.app-card').forEach(card => {
             card.addEventListener('click', (e) => {
-                // Don't interfere if clicking the direct link inside overlay
                 if (e.target.closest('.open-direct-btn')) return;
                 openApp(card);
             });
