@@ -59,6 +59,13 @@
             transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1); filter: blur(6px);
         }
         .reveal.active { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        .reveal.no-anim {
+            transition: none !important;
+            filter: none !important;
+        }
+        .reveal.no-anim.active {
+            opacity: 1; transform: none;
+        }
         .delay-100 { transition-delay: 100ms; }
         .delay-200 { transition-delay: 200ms; }
         .delay-300 { transition-delay: 300ms; }
@@ -298,7 +305,7 @@
         }
         .app-card:hover .logo-ambient { opacity: 1; }
 
-        /* ===== APP VIEW OVERLAY ===== */
+        /* ===== APP OVERLAY ===== */
         .app-overlay {
             position: fixed; inset: 0; z-index: 100;
             background: #060e1a;
@@ -306,8 +313,11 @@
             transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
                         visibility 0.45s;
         }
-        .app-overlay.open {
-            opacity: 1; visibility: visible;
+        .app-overlay.open { opacity: 1; visibility: visible; }
+        .app-overlay.restore-instant {
+            transition: none !important;
+            opacity: 1 !important;
+            visibility: visible !important;
         }
         .app-overlay-header {
             position: absolute; top: 0; left: 0; right: 0; z-index: 10;
@@ -323,8 +333,12 @@
             opacity: 0; transform: translateY(-10px);
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
         }
-        .app-overlay.open .app-overlay-header .title-area {
+        .app-overlay.open .app-overlay-header .title-area,
+        .app-overlay.restore-instant .app-overlay-header .title-area {
             opacity: 1; transform: translateY(0);
+        }
+        .app-overlay.restore-instant .app-overlay-header .title-area {
+            transition: none !important;
         }
         .app-overlay-header .back-btn {
             width: 38px; height: 38px; border-radius: 12px;
@@ -342,6 +356,10 @@
             transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
         }
         .app-overlay.open .title-glow-bar { width: 60px; }
+        .app-overlay.restore-instant .title-glow-bar {
+            width: 60px;
+            transition: none !important;
+        }
 
         @keyframes shimmer {
             0% { background-position: -200% 0; }
@@ -403,7 +421,7 @@
         </div>
     </div>
 
-    <!-- App Overlay View -->
+    <!-- App Overlay -->
     <div class="app-overlay" id="appOverlay">
         <div class="loading-bar" id="loadingBar"></div>
         <div class="app-overlay-header">
@@ -433,7 +451,7 @@
         <iframe id="appIframe" class="app-iframe" style="padding-top: 56px;" src="about:blank"></iframe>
     </div>
 
-    <!-- Main -->
+    <!-- Main Content -->
     <main class="relative z-10 max-w-[1600px] mx-auto px-8 pt-[78px] pb-20" id="mainContent">
 
         <!-- Hero -->
@@ -455,7 +473,7 @@
         <div class="max-w-[1080px] mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
-                <!-- Card 1: Matrik Kegiatan — BLUE -->
+                <!-- Card 1: Matrik Kegiatan -->
                 <div class="app-card card-blue reveal delay-100 group"
                      data-name="Matrik Kegiatan"
                      data-url="https://sikuat1471.github.io/matrikkegiatan/"
@@ -467,20 +485,10 @@
                         <div class="flex items-start justify-between mb-5">
                             <div class="logo-container" style="background: linear-gradient(145deg, rgba(59,130,246,0.18), rgba(59,130,246,0.08)); border: 1px solid rgba(59,130,246,0.25);">
                                 <div class="logo-ambient" style="background: rgba(59,130,246,0.2);"></div>
-                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="2" y="2" width="32" height="32" rx="6" stroke="#60a5fa" stroke-width="1.5" fill="rgba(59,130,246,0.08)"/>
-                                    <rect x="7" y="7" width="9" height="9" rx="2" fill="#3b82f6" opacity="0.9"/>
-                                    <rect x="20" y="7" width="9" height="9" rx="2" fill="#60a5fa" opacity="0.5"/>
-                                    <rect x="7" y="20" width="9" height="9" rx="2" fill="#60a5fa" opacity="0.5"/>
-                                    <rect x="20" y="20" width="9" height="9" rx="2" fill="#3b82f6" opacity="0.7"/>
-                                    <line x1="18" y1="4" x2="18" y2="32" stroke="#60a5fa" stroke-width="0.8" opacity="0.3"/>
-                                    <line x1="4" y1="18" x2="32" y2="18" stroke="#60a5fa" stroke-width="0.8" opacity="0.3"/>
-                                </svg>
+                                <svg viewBox="0 0 36 36" fill="none"><rect x="2" y="2" width="32" height="32" rx="6" stroke="#60a5fa" stroke-width="1.5" fill="rgba(59,130,246,0.08)"/><rect x="7" y="7" width="9" height="9" rx="2" fill="#3b82f6" opacity="0.9"/><rect x="20" y="7" width="9" height="9" rx="2" fill="#60a5fa" opacity="0.5"/><rect x="7" y="20" width="9" height="9" rx="2" fill="#60a5fa" opacity="0.5"/><rect x="20" y="20" width="9" height="9" rx="2" fill="#3b82f6" opacity="0.7"/><line x1="18" y1="4" x2="18" y2="32" stroke="#60a5fa" stroke-width="0.8" opacity="0.3"/><line x1="4" y1="18" x2="32" y2="18" stroke="#60a5fa" stroke-width="0.8" opacity="0.3"/></svg>
                                 <div class="logo-badge" style="background: #3b82f6; color: #fff;">M</div>
                             </div>
-                            <div class="go-btn">
-                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
-                            </div>
+                            <div class="go-btn"><span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span></div>
                         </div>
                         <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Matrik Kegiatan</h3>
                         <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Pengelolaan matriks kegiatan untuk perencanaan dan monitoring program kerja.</p>
@@ -491,7 +499,7 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Persediaan — TEAL -->
+                <!-- Card 2: Persediaan -->
                 <div class="app-card card-teal reveal delay-200 group"
                      data-name="Persediaan"
                      data-url="https://sikuat1471.github.io/persediaan/"
@@ -503,19 +511,10 @@
                         <div class="flex items-start justify-between mb-5">
                             <div class="logo-container" style="background: linear-gradient(145deg, rgba(20,184,166,0.18), rgba(20,184,166,0.08)); border: 1px solid rgba(20,184,166,0.25);">
                                 <div class="logo-ambient" style="background: rgba(20,184,166,0.2);"></div>
-                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M18 4L4 12L18 20L32 12L18 4Z" fill="rgba(20,184,166,0.2)" stroke="#2dd4bf" stroke-width="1.5" stroke-linejoin="round"/>
-                                    <path d="M4 12V24L18 32V20L4 12Z" fill="rgba(20,184,166,0.1)" stroke="#2dd4bf" stroke-width="1.5" stroke-linejoin="round"/>
-                                    <path d="M32 12V24L18 32V20L32 12Z" fill="rgba(20,184,166,0.15)" stroke="#2dd4bf" stroke-width="1.5" stroke-linejoin="round"/>
-                                    <line x1="18" y1="4" x2="18" y2="20" stroke="#14b8a6" stroke-width="1" opacity="0.5"/>
-                                    <line x1="18" y1="20" x2="18" y2="32" stroke="#14b8a6" stroke-width="1" opacity="0.3"/>
-                                    <circle cx="18" cy="14" r="2.5" fill="#2dd4bf" opacity="0.8"/>
-                                </svg>
+                                <svg viewBox="0 0 36 36" fill="none"><path d="M18 4L4 12L18 20L32 12L18 4Z" fill="rgba(20,184,166,0.2)" stroke="#2dd4bf" stroke-width="1.5" stroke-linejoin="round"/><path d="M4 12V24L18 32V20L4 12Z" fill="rgba(20,184,166,0.1)" stroke="#2dd4bf" stroke-width="1.5" stroke-linejoin="round"/><path d="M32 12V24L18 32V20L32 12Z" fill="rgba(20,184,166,0.15)" stroke="#2dd4bf" stroke-width="1.5" stroke-linejoin="round"/><line x1="18" y1="4" x2="18" y2="20" stroke="#14b8a6" stroke-width="1" opacity="0.5"/><circle cx="18" cy="14" r="2.5" fill="#2dd4bf" opacity="0.8"/></svg>
                                 <div class="logo-badge" style="background: #14b8a6; color: #fff;">P</div>
                             </div>
-                            <div class="go-btn">
-                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
-                            </div>
+                            <div class="go-btn"><span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span></div>
                         </div>
                         <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Persediaan</h3>
                         <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Manajemen persediaan barang, pencatatan stok masuk dan keluar secara terintegrasi.</p>
@@ -526,7 +525,7 @@
                     </div>
                 </div>
 
-                <!-- Card 3: Register — VIOLET -->
+                <!-- Card 3: Register -->
                 <div class="app-card card-violet reveal delay-300 group"
                      data-name="Register"
                      data-url="https://sikuat1471.github.io/digitasipenomoran/"
@@ -538,19 +537,10 @@
                         <div class="flex items-start justify-between mb-5">
                             <div class="logo-container" style="background: linear-gradient(145deg, rgba(139,92,246,0.18), rgba(139,92,246,0.08)); border: 1px solid rgba(139,92,246,0.25);">
                                 <div class="logo-ambient" style="background: rgba(139,92,246,0.2);"></div>
-                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8 4H22L28 10V32H8V4Z" fill="rgba(139,92,246,0.1)" stroke="#a78bfa" stroke-width="1.5" stroke-linejoin="round"/>
-                                    <path d="M22 4V10H28" stroke="#a78bfa" stroke-width="1.5" stroke-linejoin="round"/>
-                                    <text x="18" y="24" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#a78bfa" opacity="0.9">#</text>
-                                    <line x1="12" y1="14" x2="24" y2="14" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
-                                    <line x1="12" y1="18" x2="20" y2="18" stroke="#8b5cf6" stroke-width="1" opacity="0.2"/>
-                                    <line x1="12" y1="28" x2="24" y2="28" stroke="#8b5cf6" stroke-width="1" opacity="0.15"/>
-                                </svg>
+                                <svg viewBox="0 0 36 36" fill="none"><path d="M8 4H22L28 10V32H8V4Z" fill="rgba(139,92,246,0.1)" stroke="#a78bfa" stroke-width="1.5" stroke-linejoin="round"/><path d="M22 4V10H28" stroke="#a78bfa" stroke-width="1.5" stroke-linejoin="round"/><text x="18" y="24" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="800" fill="#a78bfa" opacity="0.9">#</text><line x1="12" y1="14" x2="24" y2="14" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/><line x1="12" y1="18" x2="20" y2="18" stroke="#8b5cf6" stroke-width="1" opacity="0.2"/><line x1="12" y1="28" x2="24" y2="28" stroke="#8b5cf6" stroke-width="1" opacity="0.15"/></svg>
                                 <div class="logo-badge" style="background: #8b5cf6; color: #fff;">R</div>
                             </div>
-                            <div class="go-btn">
-                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
-                            </div>
+                            <div class="go-btn"><span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span></div>
                         </div>
                         <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Register</h3>
                         <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Sistem digitasi penomoran dan registrasi dokumen otomatis untuk administrasi.</p>
@@ -561,7 +551,7 @@
                     </div>
                 </div>
 
-                <!-- Card 4: Pajak TER — GOLD -->
+                <!-- Card 4: Pajak TER -->
                 <div class="app-card card-gold reveal delay-400 group"
                      data-name="Pajak TER"
                      data-url="https://sikuat1471.github.io/perhitunganpajakter/"
@@ -573,21 +563,10 @@
                         <div class="flex items-start justify-between mb-5">
                             <div class="logo-container" style="background: linear-gradient(145deg, rgba(196,163,90,0.2), rgba(196,163,90,0.08)); border: 1px solid rgba(196,163,90,0.3);">
                                 <div class="logo-ambient" style="background: rgba(196,163,90,0.25);"></div>
-                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="4" y="4" width="28" height="28" rx="6" fill="rgba(196,163,90,0.1)" stroke="#f0d78c" stroke-width="1.5"/>
-                                    <rect x="8" y="8" width="20" height="10" rx="3" fill="rgba(196,163,90,0.2)" stroke="#f0d78c" stroke-width="1" opacity="0.8"/>
-                                    <text x="18" y="16" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="700" fill="#f0d78c" opacity="0.9">Rp</text>
-                                    <circle cx="11" cy="23" r="1.8" fill="#c4a35a" opacity="0.8"/>
-                                    <circle cx="18" cy="23" r="1.8" fill="#c4a35a" opacity="0.6"/>
-                                    <circle cx="25" cy="23" r="1.8" fill="#c4a35a" opacity="0.8"/>
-                                    <circle cx="11" cy="29" r="1.8" fill="#c4a35a" opacity="0.5"/>
-                                    <rect x="15" y="27.2" width="12" height="3.6" rx="1.8" fill="rgba(196,163,90,0.3)" stroke="#c4a35a" stroke-width="0.8" opacity="0.6"/>
-                                </svg>
+                                <svg viewBox="0 0 36 36" fill="none"><rect x="4" y="4" width="28" height="28" rx="6" fill="rgba(196,163,90,0.1)" stroke="#f0d78c" stroke-width="1.5"/><rect x="8" y="8" width="20" height="10" rx="3" fill="rgba(196,163,90,0.2)" stroke="#f0d78c" stroke-width="1" opacity="0.8"/><text x="18" y="16" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="700" fill="#f0d78c" opacity="0.9">Rp</text><circle cx="11" cy="23" r="1.8" fill="#c4a35a" opacity="0.8"/><circle cx="18" cy="23" r="1.8" fill="#c4a35a" opacity="0.6"/><circle cx="25" cy="23" r="1.8" fill="#c4a35a" opacity="0.8"/><circle cx="11" cy="29" r="1.8" fill="#c4a35a" opacity="0.5"/><rect x="15" y="27.2" width="12" height="3.6" rx="1.8" fill="rgba(196,163,90,0.3)" stroke="#c4a35a" stroke-width="0.8" opacity="0.6"/></svg>
                                 <div class="logo-badge" style="background: #c4a35a; color: #1a1a1a;">T</div>
                             </div>
-                            <div class="go-btn">
-                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
-                            </div>
+                            <div class="go-btn"><span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span></div>
                         </div>
                         <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Pajak TER</h3>
                         <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Perhitungan pajak Tera dan Terekam secara akurat dengan simulasi otomatis.</p>
@@ -598,7 +577,7 @@
                     </div>
                 </div>
 
-                <!-- Card 5: Lembur — ROSE -->
+                <!-- Card 5: Lembur -->
                 <div class="app-card card-rose reveal delay-500 group"
                      data-name="Lembur"
                      data-url="https://sikuat1471.github.io/perhitunganlembur/"
@@ -610,23 +589,10 @@
                         <div class="flex items-start justify-between mb-5">
                             <div class="logo-container" style="background: linear-gradient(145deg, rgba(244,63,94,0.18), rgba(244,63,94,0.08)); border: 1px solid rgba(244,63,94,0.25);">
                                 <div class="logo-ambient" style="background: rgba(244,63,94,0.2);"></div>
-                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="18" cy="18" r="14" fill="rgba(244,63,94,0.08)" stroke="#fb7185" stroke-width="1.5"/>
-                                    <circle cx="18" cy="18" r="11" stroke="#f43f5e" stroke-width="0.5" opacity="0.3" stroke-dasharray="2 2"/>
-                                    <line x1="18" y1="18" x2="18" y2="10" stroke="#fb7185" stroke-width="2" stroke-linecap="round"/>
-                                    <line x1="18" y1="18" x2="24" y2="18" stroke="#f43f5e" stroke-width="1.5" stroke-linecap="round"/>
-                                    <circle cx="18" cy="18" r="1.5" fill="#fb7185"/>
-                                    <circle cx="18" cy="7" r="1" fill="#fb7185" opacity="0.6"/>
-                                    <circle cx="18" cy="29" r="1" fill="#fb7185" opacity="0.6"/>
-                                    <circle cx="7" cy="18" r="1" fill="#fb7185" opacity="0.6"/>
-                                    <circle cx="29" cy="18" r="1" fill="#fb7185" opacity="0.6"/>
-                                    <path d="M26 10 A14 14 0 0 1 29 18" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7"/>
-                                </svg>
+                                <svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" fill="rgba(244,63,94,0.08)" stroke="#fb7185" stroke-width="1.5"/><circle cx="18" cy="18" r="11" stroke="#f43f5e" stroke-width="0.5" opacity="0.3" stroke-dasharray="2 2"/><line x1="18" y1="18" x2="18" y2="10" stroke="#fb7185" stroke-width="2" stroke-linecap="round"/><line x1="18" y1="18" x2="24" y2="18" stroke="#f43f5e" stroke-width="1.5" stroke-linecap="round"/><circle cx="18" cy="18" r="1.5" fill="#fb7185"/><circle cx="18" cy="7" r="1" fill="#fb7185" opacity="0.6"/><circle cx="18" cy="29" r="1" fill="#fb7185" opacity="0.6"/><circle cx="7" cy="18" r="1" fill="#fb7185" opacity="0.6"/><circle cx="29" cy="18" r="1" fill="#fb7185" opacity="0.6"/><path d="M26 10A14 14 0 0 1 29 18" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7"/></svg>
                                 <div class="logo-badge" style="background: #f43f5e; color: #fff;">L</div>
                             </div>
-                            <div class="go-btn">
-                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
-                            </div>
+                            <div class="go-btn"><span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span></div>
                         </div>
                         <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Lembur</h3>
                         <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Kalkulasi jam lembur pegawai dengan perhitungan upah lembur yang sesuai aturan.</p>
@@ -637,7 +603,7 @@
                     </div>
                 </div>
 
-                <!-- Card 6: Laporan — EMERALD -->
+                <!-- Card 6: Laporan -->
                 <div class="app-card card-emerald reveal delay-600 group"
                      data-name="Laporan"
                      data-url="https://sikuat1471.github.io/laporantranslok/"
@@ -649,19 +615,10 @@
                         <div class="flex items-start justify-between mb-5">
                             <div class="logo-container" style="background: linear-gradient(145deg, rgba(16,185,129,0.18), rgba(16,185,129,0.08)); border: 1px solid rgba(16,185,129,0.25);">
                                 <div class="logo-ambient" style="background: rgba(16,185,129,0.2);"></div>
-                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="4" y="4" width="28" height="28" rx="6" fill="rgba(16,185,129,0.06)" stroke="#34d399" stroke-width="1.5"/>
-                                    <rect x="9" y="22" width="4" height="8" rx="1" fill="#34d399" opacity="0.5"/>
-                                    <rect x="16" y="16" width="4" height="14" rx="1" fill="#34d399" opacity="0.7"/>
-                                    <rect x="23" y="11" width="4" height="19" rx="1" fill="#10b981" opacity="0.9"/>
-                                    <path d="M8 24L17 17L25 12L30 9" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
-                                    <circle cx="30" cy="9" r="2" fill="#34d399" opacity="0.8"/>
-                                </svg>
+                                <svg viewBox="0 0 36 36" fill="none"><rect x="4" y="4" width="28" height="28" rx="6" fill="rgba(16,185,129,0.06)" stroke="#34d399" stroke-width="1.5"/><rect x="9" y="22" width="4" height="8" rx="1" fill="#34d399" opacity="0.5"/><rect x="16" y="16" width="4" height="14" rx="1" fill="#34d399" opacity="0.7"/><rect x="23" y="11" width="4" height="19" rx="1" fill="#10b981" opacity="0.9"/><path d="M8 24L17 17L25 12L30 9" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/><circle cx="30" cy="9" r="2" fill="#34d399" opacity="0.8"/></svg>
                                 <div class="logo-badge" style="background: #10b981; color: #fff;">Lp</div>
                             </div>
-                            <div class="go-btn">
-                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
-                            </div>
+                            <div class="go-btn"><span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span></div>
                         </div>
                         <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Laporan</h3>
                         <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Laporan translokasi lengkap dengan visualisasi data dan ekspor dokumen.</p>
@@ -672,7 +629,7 @@
                     </div>
                 </div>
 
-                <!-- Card 7: Mitra Statistik — AMBER -->
+                <!-- Card 7: Mitra Statistik -->
                 <div class="app-card card-amber reveal delay-700 group lg:col-start-2"
                      data-name="Mitra Statistik"
                      data-url="https://sikuat1471.github.io/kontrakkerja/"
@@ -684,24 +641,10 @@
                         <div class="flex items-start justify-between mb-5">
                             <div class="logo-container" style="background: linear-gradient(145deg, rgba(245,158,11,0.18), rgba(245,158,11,0.08)); border: 1px solid rgba(245,158,11,0.25);">
                                 <div class="logo-ambient" style="background: rgba(245,158,11,0.2);"></div>
-                                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="3" y="3" width="30" height="30" rx="7" fill="rgba(245,158,11,0.06)" stroke="#fbbf24" stroke-width="1.5"/>
-                                    <!-- Left person silhouette -->
-                                    <circle cx="11" cy="13" r="3.2" fill="rgba(245,158,11,0.2)" stroke="#fbbf24" stroke-width="1"/>
-                                    <path d="M6 23C6 20 8.2 17.5 11 17.5C13.8 17.5 16 20 16 23" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" fill="rgba(245,158,11,0.08)"/>
-                                    <!-- Right person silhouette -->
-                                    <circle cx="25" cy="13" r="3.2" fill="rgba(245,158,11,0.2)" stroke="#fbbf24" stroke-width="1"/>
-                                    <path d="M20 23C20 20 22.2 17.5 25 17.5C27.8 17.5 30 20 30 23" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" fill="rgba(245,158,11,0.08)"/>
-                                    <!-- Handshake connector -->
-                                    <path d="M14 21C15.5 22.5 16.5 22.5 18 21.5C19.5 22.5 20.5 22.5 22 21" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.9"/>
-                                    <circle cx="18" cy="28" r="1.5" fill="#fbbf24" opacity="0.5"/>
-                                    <line x1="14" y1="28" x2="22" y2="28" stroke="#f59e0b" stroke-width="0.8" opacity="0.3"/>
-                                </svg>
+                                <svg viewBox="0 0 36 36" fill="none"><rect x="3" y="3" width="30" height="30" rx="7" fill="rgba(245,158,11,0.06)" stroke="#fbbf24" stroke-width="1.5"/><circle cx="11" cy="13" r="3.2" fill="rgba(245,158,11,0.2)" stroke="#fbbf24" stroke-width="1"/><path d="M6 23C6 20 8.2 17.5 11 17.5C13.8 17.5 16 20 16 23" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" fill="rgba(245,158,11,0.08)"/><circle cx="25" cy="13" r="3.2" fill="rgba(245,158,11,0.2)" stroke="#fbbf24" stroke-width="1"/><path d="M20 23C20 20 22.2 17.5 25 17.5C27.8 17.5 30 20 30 23" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round" fill="rgba(245,158,11,0.08)"/><path d="M14 21C15.5 22.5 16.5 22.5 18 21.5C19.5 22.5 20.5 22.5 22 21" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.9"/><circle cx="18" cy="28" r="1.5" fill="#fbbf24" opacity="0.5"/><line x1="14" y1="28" x2="22" y2="28" stroke="#f59e0b" stroke-width="0.8" opacity="0.3"/></svg>
                                 <div class="logo-badge" style="background: #f59e0b; color: #1a1a1a;">MS</div>
                             </div>
-                            <div class="go-btn">
-                                <span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span>
-                            </div>
+                            <div class="go-btn"><span class="iconify text-slate-500" data-icon="lucide:arrow-up-right" data-width="16"></span></div>
                         </div>
                         <h3 class="text-[15px] font-bold text-white mb-2 tracking-tight">Mitra Statistik</h3>
                         <p class="text-[13px] text-slate-400 leading-relaxed flex-1">Manajemen mitra statistik dan kontrak kerja untuk kerjasama eksternal terintegrasi.</p>
@@ -751,7 +694,79 @@
 
     <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <script>
-        // ===== CLOCK =====
+        // =============================================
+        // CONSTANTS — sessionStorage keys
+        // =============================================
+        const SK_SCROLL = 'sikuat-scroll-pos';
+        const SK_APP_OPEN = 'sikuat-app-open';
+        const SK_APP_NAME = 'sikuat-app-name';
+        const SK_APP_URL = 'sikuat-app-url';
+        const SK_APP_COLOR = 'sikuat-app-color';
+        const SK_APP_COLOR_LIGHT = 'sikuat-app-color-light';
+        const SK_APP_ICON = 'sikuat-app-icon';
+
+        // Nonaktifkan auto scroll restoration bawaan browser
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
+        // =============================================
+        // SIMPAN POSISI SCROLL (portal) secara real-time
+        // =============================================
+        let _saveTimer = null;
+        window.addEventListener('scroll', () => {
+            if (_saveTimer) cancelAnimationFrame(_saveTimer);
+            _saveTimer = requestAnimationFrame(() => {
+                // Hanya simpan jika overlay TIDAK terbuka
+                if (!overlay.classList.contains('open') &&
+                    !overlay.classList.contains('restore-instant')) {
+                    sessionStorage.setItem(SK_SCROLL, window.scrollY.toString());
+                }
+            });
+        }, { passive: true });
+
+        window.addEventListener('beforeunload', () => {
+            if (!overlay.classList.contains('open') &&
+                !overlay.classList.contains('restore-instant')) {
+                sessionStorage.setItem(SK_SCROLL, window.scrollY.toString());
+            }
+        });
+
+        // =============================================
+        // SIMPAN STATE APLIKASI YANG SEDANG DIBUKA
+        // =============================================
+        function saveAppState(name, url, color, colorLight, icon) {
+            sessionStorage.setItem(SK_APP_OPEN, '1');
+            sessionStorage.setItem(SK_APP_NAME, name);
+            sessionStorage.setItem(SK_APP_URL, url);
+            sessionStorage.setItem(SK_APP_COLOR, color);
+            sessionStorage.setItem(SK_APP_COLOR_LIGHT, colorLight);
+            sessionStorage.setItem(SK_APP_ICON, icon);
+        }
+
+        function clearAppState() {
+            sessionStorage.removeItem(SK_APP_OPEN);
+            sessionStorage.removeItem(SK_APP_NAME);
+            sessionStorage.removeItem(SK_APP_URL);
+            sessionStorage.removeItem(SK_APP_COLOR);
+            sessionStorage.removeItem(SK_APP_COLOR_LIGHT);
+            sessionStorage.removeItem(SK_APP_ICON);
+        }
+
+        function getAppState() {
+            if (sessionStorage.getItem(SK_APP_OPEN) !== '1') return null;
+            return {
+                name: sessionStorage.getItem(SK_APP_NAME) || '',
+                url: sessionStorage.getItem(SK_APP_URL) || '',
+                color: sessionStorage.getItem(SK_APP_COLOR) || '#3b82f6',
+                colorLight: sessionStorage.getItem(SK_APP_COLOR_LIGHT) || '#60a5fa',
+                icon: sessionStorage.getItem(SK_APP_ICON) || 'lucide:box'
+            };
+        }
+
+        // =============================================
+        // CLOCK
+        // =============================================
         function updateClock() {
             const now = new Date();
             const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
@@ -760,26 +775,69 @@
         updateClock();
         setInterval(updateClock, 1000);
 
-        // ===== REVEAL ON SCROLL =====
+        // =============================================
+        // REVEAL ON SCROLL
+        // =============================================
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
             });
         }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // ===== CARD MOUSE TRACKING =====
-        document.querySelectorAll('.app-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width) * 100;
-                const y = ((e.clientY - rect.top) / rect.height) * 100;
-                card.style.setProperty('--mouse-x', x + '%');
-                card.style.setProperty('--mouse-y', y + '%');
-            });
-        });
+        // =============================================
+        // RESTORE SCROLL POSISI (portal)
+        // Dipanggil saat load jika TIDAK ada app yang terbuka
+        // =============================================
+        function restoreScrollPosition() {
+            const saved = sessionStorage.getItem(SK_SCROLL);
+            if (!saved) return;
 
-        // ===== APP OVERLAY SYSTEM =====
+            const scrollPos = parseInt(saved, 10);
+            if (isNaN(scrollPos) || scrollPos <= 0) {
+                sessionStorage.removeItem(SK_SCROLL);
+                return;
+            }
+
+            // Hitung batas bawah viewport di posisi scroll tersimpan
+            const viewportBottom = scrollPos + window.innerHeight + 60;
+
+            // Aktifkan semua reveal yang seharusnya sudah terlihat
+            // dengan class no-anim (tanpa animasi)
+            const reveals = document.querySelectorAll('.reveal:not(.active)');
+            reveals.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < viewportBottom) {
+                    el.classList.add('no-anim');
+                    el.classList.add('active');
+                }
+            });
+
+            // Force reflow
+            void document.body.offsetHeight;
+
+            // Scroll ke posisi
+            window.scrollTo(0, scrollPos);
+
+            // Hapus no-anim setelah 2 frame agar animasi normal kembali
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    document.querySelectorAll('.reveal.no-anim').forEach(el => {
+                        el.classList.remove('no-anim');
+                    });
+                });
+            });
+
+            sessionStorage.removeItem(SK_SCROLL);
+        }
+
+        // =============================================
+        // APP OVERLAY SYSTEM
+        // =============================================
         const overlay = document.getElementById('appOverlay');
         const iframe = document.getElementById('appIframe');
         const overlayTitle = document.getElementById('overlayTitle');
@@ -790,8 +848,6 @@
         const backBtn = document.getElementById('backBtn');
         const mainTopBar = document.getElementById('mainTopBar');
 
-        let currentAppName = '';
-
         function hexToRgba(hex, alpha) {
             const r = parseInt(hex.slice(1, 3), 16);
             const g = parseInt(hex.slice(3, 5), 16);
@@ -799,6 +855,7 @@
             return `rgba(${r},${g},${b},${alpha})`;
         }
 
+        // Buka aplikasi dengan animasi normal
         function openApp(card) {
             const name = card.dataset.name;
             const url = card.dataset.url;
@@ -806,64 +863,66 @@
             const colorLight = card.dataset.colorLight;
             const icon = card.dataset.icon;
 
-            currentAppName = name;
+            applyOverlayState(name, url, color, colorLight, icon, false);
+            saveAppState(name, url, color, colorLight, icon);
+        }
 
-            // Update document title
+        // Terapkan state ke overlay (bisa animasi atau instant)
+        function applyOverlayState(name, url, color, colorLight, icon, instant) {
             document.title = name + ' — SIKUAT-HUB';
 
-            // Update overlay header
             overlayTitle.textContent = name;
             overlayIcon.style.background = hexToRgba(color, 0.15);
             overlayIcon.style.borderColor = hexToRgba(color, 0.25);
-            overlayIcon.innerHTML = `<span class="iconify" data-icon="${icon}" data-width="16" style="color:${colorLight}"></span>`;
-            titleGlowBar.style.background = `linear-gradient(90deg, ${color}, ${colorLight})`;
+            overlayIcon.innerHTML = '<span class="iconify" data-icon="' + icon + '" data-width="16" style="color:' + colorLight + '"></span>';
+            titleGlowBar.style.background = 'linear-gradient(90deg, ' + color + ', ' + colorLight + ')';
 
-            // Update direct link
             openDirectBtn.href = url;
-
-            // Show loading bar
             loadingBar.classList.remove('hidden');
 
-            // Hide main top bar, show overlay
             mainTopBar.style.opacity = '0';
             mainTopBar.style.pointerEvents = 'none';
-            overlay.classList.add('open');
             document.body.style.overflow = 'hidden';
 
-            // Load iframe
+            if (instant) {
+                // Langsung tampil tanpa animasi
+                overlay.classList.add('restore-instant');
+            } else {
+                overlay.classList.remove('restore-instant');
+                overlay.classList.add('open');
+            }
+
             iframe.src = url;
 
-            // Re-scan iconify in overlay
             if (window.Iconify) {
                 setTimeout(() => Iconify.scan(overlayIcon), 50);
             }
         }
 
+        // Tutup aplikasi
         function closeApp() {
-            overlay.classList.remove('open');
+            overlay.classList.remove('open', 'restore-instant');
             document.body.style.overflow = '';
 
-            // Restore main top bar
             setTimeout(() => {
                 mainTopBar.style.opacity = '1';
                 mainTopBar.style.pointerEvents = '';
             }, 100);
 
-            // Restore title
             document.title = 'SIKUAT-Portal Aplikasi BPS';
+            clearAppState();
 
-            // Clear iframe after animation
             setTimeout(() => {
                 iframe.src = 'about:blank';
             }, 500);
         }
 
-        // Iframe load complete
+        // iframe selesai loading
         iframe.addEventListener('load', () => {
             loadingBar.classList.add('hidden');
         });
 
-        // Card click events
+        // Card click
         document.querySelectorAll('.app-card').forEach(card => {
             card.addEventListener('click', (e) => {
                 if (e.target.closest('.open-direct-btn')) return;
@@ -874,12 +933,51 @@
         // Back button
         backBtn.addEventListener('click', closeApp);
 
-        // ESC key to close
+        // ESC key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && overlay.classList.contains('open')) {
+            if (e.key === 'Escape' && (overlay.classList.contains('open') || overlay.classList.contains('restore-instant'))) {
                 closeApp();
             }
         });
+
+        // =============================================
+        // INIT — Saat halaman pertama kali dimuat
+        // Cek: ada app yang sedang terbuka atau tidak?
+        // =============================================
+        function init() {
+            const savedApp = getAppState();
+
+            if (savedApp && savedApp.url) {
+                // === Skenario 2: User refresh saat di dalam aplikasi ===
+                // Langsung buka overlay tanpa animasi (instant)
+                applyOverlayState(
+                    savedApp.name,
+                    savedApp.url,
+                    savedApp.color,
+                    savedApp.colorLight,
+                    savedApp.icon,
+                    true // instant = tanpa animasi
+                );
+
+                // Setelah 1 detik, hapus class restore-instant
+                // agar animasi close normal bisa berjalan saat user klik back
+                setTimeout(() => {
+                    overlay.classList.remove('restore-instant');
+                    overlay.classList.add('open');
+                }, 1000);
+            } else {
+                // === Skenario 1: User refresh saat di portal ===
+                // Restore posisi scroll
+                restoreScrollPosition();
+            }
+        }
+
+        // Jalankan init
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
     </script>
 </body>
 </html>
